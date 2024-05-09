@@ -23,6 +23,8 @@ public abstract class GamePlay extends JPanel{
 	
 	public GamePlay(JFrame parent) {
 		this.parent = parent;
+		this.setSize(600, 800);
+		
 		try {
 			//TODO add images
 			pacmanOpenImage = ImageIO.read(new File("background.png")); 
@@ -37,6 +39,7 @@ public abstract class GamePlay extends JPanel{
 		
 		gamePanel = getJPanel();
         add(gamePanel);
+        setVisible(true);
 		
 	}
 	
@@ -53,14 +56,14 @@ public abstract class GamePlay extends JPanel{
 				
 				
 				//Draw background
-				g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
+				g.drawImage(pacmanImage, 0, 0, 600, 800, this);
 				
 				//Draw pacman
 				g.drawImage(pacmanImage, 300, 400, 20, 20, this);
 			}
 			
 		};
-		
+		gamePanel.setSize(600, 800);
 		return gamePanel;
 	}
 	
