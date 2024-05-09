@@ -1,4 +1,9 @@
+import java.awt.Image;
+
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 /**
  * Creates the main JFrame for the game
@@ -15,6 +20,10 @@ public class PacMan {
 
         // Create JFrame for the game
         JFrame frame = new JFrame("Game");
+       
+        
+        
+        
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         frame.setSize(500, 800);
@@ -22,6 +31,10 @@ public class PacMan {
         frame.setVisible(true);
         frame.repaint();
         frame.revalidate();
+    }
+    
+    public void addPanel() {
+    	
     }
 	
 }
