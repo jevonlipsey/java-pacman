@@ -1,5 +1,8 @@
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 
 public class LayoutOne extends GamePlay {
@@ -11,8 +14,13 @@ public class LayoutOne extends GamePlay {
 
 	@Override
 	public BufferedImage getBackgroundImage() {
-		// TODO Auto-generated method stub
-		return null;
+		  BufferedImage background = null;
+	        try {
+	            background = ImageIO.read(new File("background.png")); //TODO: update this to a map
+	        }  catch (IOException e) {
+	            e.printStackTrace();
+	        }
+	        return background;
 	}
 
 }

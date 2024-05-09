@@ -36,15 +36,24 @@ public abstract class GamePlay extends JPanel{
 		
 	}
 	
+	 /**
+     * Sets up the gamePanel, adds the background, characters, and key bindings.
+     * @return gamePanel
+     */
 	public JPanel getJPanel() {
 		JPanel gamePanel = new JPanel() {
 			
 			@Override
 			protected void paintComponent(Graphics g) {
 				super.paintComponent(g);
+				
+				
+				//Draw background
+				g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
 			}
 			
 		};
+		
 		return gamePanel;
 	}
 	

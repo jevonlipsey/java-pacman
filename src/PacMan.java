@@ -20,21 +20,17 @@ public class PacMan {
 
         // Create JFrame for the game
         JFrame frame = new JFrame("Game");
-       
-        
-        
         
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        
+        //Add the next JPanel
+        SwingUtilities.invokeLater(() -> frame.getContentPane().add(new LayoutOne(frame)));
 
         frame.setSize(500, 800);
         frame.setResizable(false);
         frame.setVisible(true);
         frame.repaint();
         frame.revalidate();
-    }
-    
-    public void addPanel() {
-    	
     }
 	
 }
