@@ -18,7 +18,10 @@ public abstract class GamePlay extends JPanel{
 	private JPanel gamePanel;
 	
 	private BufferedImage backgroundImage;
-	private BufferedImage pacmanOpenImage;
+	private BufferedImage pacmanUpImage;
+	private BufferedImage pacmanDownImage;
+	private BufferedImage pacmanLeftImage;
+	private BufferedImage pacmanRightImage;
 	private BufferedImage pacmanClosedImage;
 	private BufferedImage pacmanImage;
 	
@@ -44,9 +47,12 @@ public abstract class GamePlay extends JPanel{
 		
 		try {
 			//TODO add images
-			pacmanOpenImage = ImageIO.read(new File("pacmanOpen.png")); 
+			pacmanUpImage = ImageIO.read(new File("pacmanUpOpen.png")); 
+			pacmanDownImage = ImageIO.read(new File("pacmanDownOpen.png")); 
+			pacmanLeftImage = ImageIO.read(new File("pacmanLeftOpen.png")); 
+			pacmanRightImage = ImageIO.read(new File("pacmanRightOpen.png")); 
 			//pacmanClosedImage = ImageIO.read(new File("pacmanClosed.png")); 
-			pacmanImage = pacmanOpenImage;
+			pacmanImage = pacmanUpImage;
 			
 			backgroundImage = getBackgroundImage(); 
 		}
@@ -138,10 +144,22 @@ public abstract class GamePlay extends JPanel{
     }
     
     public void updateSprites() {
-    	if (pacmanDirection == UP) pacmanY -= SPEED;
-    	if (pacmanDirection == DOWN) pacmanY += SPEED;
-    	if (pacmanDirection == LEFT) pacmanX -= SPEED;
-    	if (pacmanDirection == RIGHT) pacmanX += SPEED;
+    	if (pacmanDirection == UP) {
+    		pacmanY -= SPEED;
+    		pacmanImage = pacmanUpImage;
+    	}
+    	else if (pacmanDirection == DOWN) {
+    		pacmanY += SPEED;
+    		pacmanImage = pacmanDownImage;
+    	}
+    	else if (pacmanDirection == LEFT) {
+    		pacmanX -= SPEED;
+    		pacmanImage = pacmanLeftImage;
+    	}
+    	if (pacmanDirection == RIGHT) {
+    		pacmanX += SPEED;
+    		pacmanImage = pacmanRightImage;
+    	}
     		
     	
     	SwingUtilities.invokeLater(() -> {
