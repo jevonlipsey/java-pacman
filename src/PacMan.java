@@ -32,5 +32,4 @@ public class PacMan {
         frame.repaint();
         frame.revalidate();
     }
-	
 }

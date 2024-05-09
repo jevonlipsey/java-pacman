@@ -10,7 +10,7 @@ import java.util.ArrayList;
  */
 public class HighScoreDatabase {
 	private static final String DB_NAME = "PacMan";
-    private static final String DB_USER = "d_sherwood"; 
+    private static final String DB_USER = "d_sherwood"; // Edit this
     private static final String DB_PASSWORD = "Changeme_00"; 
     private static final String CONNECTION_NAME = "jdbc:mysql://localhost:1521/" + DB_NAME + "?user=" + DB_USER + "&password=" + DB_PASSWORD;
     private static Connection conn;
