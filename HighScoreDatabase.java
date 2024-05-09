@@ -86,7 +86,7 @@ public class HighScoreDatabase {
     	test.addNewScore(72, "Talon");
     	test.addNewScore(42, "Erin");
     	
-    	System.out.println(test.getTopNScores(2));
+    	System.out.println(test.getTopNScores(3));
     	test.clearHighScores();
     }
 }
