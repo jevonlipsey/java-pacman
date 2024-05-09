@@ -14,13 +14,13 @@ public class LayoutOne extends GamePlay {
 
 	@Override
 	public BufferedImage getBackgroundImage() {
-		  BufferedImage background = null;
-	        try {
-	            background = ImageIO.read(new File("background.png")); //TODO: update this to a map
-	        }  catch (IOException e) {
-	            e.printStackTrace();
-	        }
-	        return background;
+		BufferedImage background = null;
+		try {
+			background = ImageIO.read(new File("background.png")); //TODO: update this to a map
+		} catch (IOException e) {
+	        e.printStackTrace();
+	    }
+	    return background;
 	}
 
 }

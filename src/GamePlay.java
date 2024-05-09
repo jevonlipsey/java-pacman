@@ -13,18 +13,21 @@ import javax.swing.JPanel;
 public abstract class GamePlay extends JPanel{
 	
 	private final JFrame parent;
+	private JPanel gamePanel;
 	
 	private BufferedImage backgroundImage;
 	private BufferedImage pacmanOpenImage;
 	private BufferedImage pacmanClosedImage;
+	private BufferedImage pacmanImage;
 	
 	
 	public GamePlay(JFrame parent) {
 		this.parent = parent;
 		try {
 			//TODO add images
-			pacmanOpenImage = ImageIO.read(new File("pacmanOpen.png")); 
-			pacmanClosedImage = ImageIO.read(new File("pacmanClosed.png")); 
+			pacmanOpenImage = ImageIO.read(new File("background.png")); 
+			//pacmanClosedImage = ImageIO.read(new File("pacmanClosed.png")); 
+			pacmanImage = pacmanOpenImage;
 			
 			backgroundImage = getBackgroundImage(); 
 		}
@@ -32,7 +35,8 @@ public abstract class GamePlay extends JPanel{
 			e.printStackTrace();
 		}
 		
-		
+		gamePanel = getJPanel();
+        add(gamePanel);
 		
 	}
 	
@@ -50,6 +54,9 @@ public abstract class GamePlay extends JPanel{
 				
 				//Draw background
 				g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
+				
+				//Draw pacman
+				g.drawImage(pacmanImage, 300, 400, 20, 20, this);
 			}
 			
 		};

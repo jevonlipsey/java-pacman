@@ -26,7 +26,7 @@ public class PacMan {
         //Add the next JPanel
         SwingUtilities.invokeLater(() -> frame.getContentPane().add(new LayoutOne(frame)));
 
-        frame.setSize(500, 800);
+        frame.setSize(600, 800);
         frame.setResizable(false);
         frame.setVisible(true);
         frame.repaint();
