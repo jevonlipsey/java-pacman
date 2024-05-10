@@ -38,7 +38,7 @@ public class Leaderboard extends JPanel{
         
         add(playButton);
         
-        scores.setBounds(160, 260, 270, 90);
+        scores.setBounds(160, 265, 270, 400);
         menuButton.setBounds(20, 650, 270, 90);
         playButton.setBounds(300, 650, 270, 90);
         
@@ -90,7 +90,6 @@ public class Leaderboard extends JPanel{
 		}
 		scoreString += "<html>";
 		theScores.setText(scoreString);
-		theScores.setBackground(Color.BLUE);
 		theScores.setForeground(Color.YELLOW);
 		theScores.setFont(new Font("Serif", Font.BOLD, 24));
 		theScores.setHorizontalAlignment(SwingConstants.CENTER);
