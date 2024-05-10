@@ -11,7 +11,7 @@ public class LayoutOne extends GamePlay {
 	public LayoutOne(JFrame parent) {
 		super(parent);
 		this.parent = parent;
-        this.setSize(600, 800);
+        this.setSize(600, 2200);
         setLayout(null);
 		
 	}
@@ -20,7 +20,7 @@ public class LayoutOne extends GamePlay {
 	public BufferedImage getBackgroundImage() {
 		BufferedImage background = null;
 		try {
-			background = ImageIO.read(new File("background.png"));
+			background = ImageIO.read(new File("EMPTYBACKGROUND.png"));
 		} catch (IOException e) {
 	        e.printStackTrace();
 	    }

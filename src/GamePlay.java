@@ -36,6 +36,9 @@ public abstract class GamePlay extends JPanel{
     
     private static final int SPEED = 3;
     
+    private static final int BOTTOM_BORDER = 740;
+    private static final int RIGHT_BORDER = 570;
+    
     private final Timer timer;
     private final long startTime;
     
@@ -144,19 +147,24 @@ public abstract class GamePlay extends JPanel{
     }
     
     public void updateSprites() {
-    	if (pacmanDirection == UP) {
+    	
+    	if (pacmanDirection == UP && pacmanY > 0) 
+    	{
     		pacmanY -= SPEED;
     		pacmanImage = pacmanUpImage;
     	}
-    	else if (pacmanDirection == DOWN) {
+    	else if (pacmanDirection == DOWN && pacmanY  < BOTTOM_BORDER)
+    	{
     		pacmanY += SPEED;
     		pacmanImage = pacmanDownImage;
     	}
-    	else if (pacmanDirection == LEFT) {
+    	else if (pacmanDirection == LEFT && pacmanX > 0)
+    	{
     		pacmanX -= SPEED;
     		pacmanImage = pacmanLeftImage;
     	}
-    	if (pacmanDirection == RIGHT) {
+    	else if (pacmanDirection == RIGHT && pacmanX < RIGHT_BORDER) 
+    	{
     		pacmanX += SPEED;
     		pacmanImage = pacmanRightImage;
     	}
