@@ -1,22 +1,29 @@
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.GridLayout;
+import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
+
 
 public class Leaderboard extends JPanel{
 	private static final Font font = new Font("Dialog", Font.BOLD, 24);
 	private final JFrame parent;
-	private JPanel leaderboardPanel;
+	private JPanel thisJPanel;
 	private JLabel theScores;
 	
 	private HighScoreDatabase database;
@@ -26,41 +33,50 @@ public class Leaderboard extends JPanel{
 	 * @param parent
 	 */
 	public Leaderboard(JFrame parent) {
-		database = new HighScoreDatabase();
 		this.parent = parent;
-        this.setSize(600, 800);
-        parent.setLayout(new BorderLayout()); 
+		thisJPanel = this;
+		
+		BackgroundPanel backgroundPanel = new BackgroundPanel("leaderboard.png");
         
-        leaderboardPanel = new JPanel(new BorderLayout());
-        JPanel center = new JPanel(new GridLayout(2,0));
+        JButton playButton = createTransparentButton();
+        JButton menuButton = createTransparentButton();
         
-        JLabel header = new JLabel("High Scores!", SwingConstants.CENTER);
-        header.setForeground(Color.BLUE);
-        header.setFont(new Font("Serif", Font.BOLD, 34));
-        header.setHorizontalAlignment(SwingConstants.CENTER);
-		header.setVerticalAlignment(SwingConstants.BOTTOM);
+        add(playButton);
         
-        center.add(header);
-        center.add(leaderboardLabel());
-        center.setBackground(Color.BLACK);
+        menuButton.setBounds(20, 650, 270, 90);
+        playButton.setBounds(300, 650, 270, 90);
         
         
-        JPanel buttons = new JPanel(new GridLayout());
-        buttons.setBackground(Color.BLACK);
+        playButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                parent.getContentPane().remove(thisJPanel);
+                SwingUtilities.invokeLater(() -> parent.getContentPane().add(new LayoutOne(parent)));
+                parent.getContentPane().revalidate();
+                parent.getContentPane().repaint();
+            }
+        });
 
-        JButton playAgain = new JButton("Play Again");
-        JButton exit = new JButton("Main Menu");
+        menuButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                parent.getContentPane().remove(thisJPanel);
+                SwingUtilities.invokeLater(() -> parent.getContentPane().add(new HomeScreen(parent)));
+                parent.getContentPane().revalidate();
+                parent.getContentPane().repaint();
+            }
+        });
+
+   
+
+        backgroundPanel.add(playButton);
+        backgroundPanel.add(menuButton);
+
+        backgroundPanel.setPreferredSize(new Dimension(600, 800));
+        backgroundPanel.setFocusable(true);
+        add(backgroundPanel);
+        setVisible(true);
         
-        buttons.add(playAgain);
-        buttons.add(exit);
-        
-        leaderboardPanel.add(buttons,BorderLayout.SOUTH);
-        leaderboardPanel.setBackground(Color.BLACK);
-        leaderboardPanel.add(center, BorderLayout.CENTER);
-		
-		
-        parent.add(leaderboardPanel, BorderLayout.CENTER);
-		parent.setVisible(true);
 	}
 	
 	/**
@@ -71,10 +87,10 @@ public class Leaderboard extends JPanel{
 		
 		String scoreString = "<html>";
 		theScores = new JLabel(scoreString, SwingConstants.CENTER);
-		ArrayList<String> scores = database.getTopNScores(10);
-		for(int i = 0; i < scores.size(); i++) {
-			scoreString += scores.get(i) + "<br/>";
-		}
+		//ArrayList<String> scores = database.getTopNScores(10);
+		//for(int i = 0; i < scores.size(); i++) {
+		//	scoreString += scores.get(i) + "<br/>";
+		//}
 		scoreString += "<html>";
 		theScores.setText(scoreString);
 		theScores.setBackground(Color.BLUE);
@@ -85,14 +101,20 @@ public class Leaderboard extends JPanel{
 		return theScores;
 	}
 	
+	/**
+	 * @return transparent button
+	 */
+    private JButton createTransparentButton() {
+        JButton button = new JButton();
+        button.setContentAreaFilled(false); 
+        button.setFocusPainted(false); 
+        button.setBorderPainted(false); 
+        button.setOpaque(false);
+        return button;
+    }
 	
-
 	
-	public static void main(String[] args) {
-		JFrame parent = new JFrame();
-		parent.setSize(600,800);
-		parent.setVisible(true);
-		parent.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		Leaderboard lb = new Leaderboard(parent);
-	}
+	
+    
+	
 }
