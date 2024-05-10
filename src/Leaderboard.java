@@ -1,17 +1,10 @@
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.GridLayout;
-import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
 import java.util.ArrayList;
 
-import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -33,6 +26,7 @@ public class Leaderboard extends JPanel{
 	 * @param parent
 	 */
 	public Leaderboard(JFrame parent) {
+		database = new HighScoreDatabase();
 		this.parent = parent;
 		thisJPanel = this;
 		
@@ -40,9 +34,11 @@ public class Leaderboard extends JPanel{
         
         JButton playButton = createTransparentButton();
         JButton menuButton = createTransparentButton();
+        JLabel scores = leaderboardLabel();
         
         add(playButton);
         
+        scores.setBounds(160, 260, 270, 90);
         menuButton.setBounds(20, 650, 270, 90);
         playButton.setBounds(300, 650, 270, 90);
         
@@ -71,6 +67,7 @@ public class Leaderboard extends JPanel{
 
         backgroundPanel.add(playButton);
         backgroundPanel.add(menuButton);
+        backgroundPanel.add(scores);
 
         backgroundPanel.setPreferredSize(new Dimension(600, 800));
         backgroundPanel.setFocusable(true);
@@ -87,10 +84,10 @@ public class Leaderboard extends JPanel{
 		
 		String scoreString = "<html>";
 		theScores = new JLabel(scoreString, SwingConstants.CENTER);
-		//ArrayList<String> scores = database.getTopNScores(10);
-		//for(int i = 0; i < scores.size(); i++) {
-		//	scoreString += scores.get(i) + "<br/>";
-		//}
+		ArrayList<String> scores = database.getTopNScores(10);
+		for(int i = 0; i < scores.size(); i++) {
+			scoreString += scores.get(i) + "<br/>";
+		}
 		scoreString += "<html>";
 		theScores.setText(scoreString);
 		theScores.setBackground(Color.BLUE);
@@ -98,6 +95,8 @@ public class Leaderboard extends JPanel{
 		theScores.setFont(new Font("Serif", Font.BOLD, 24));
 		theScores.setHorizontalAlignment(SwingConstants.CENTER);
 		theScores.setVerticalAlignment(SwingConstants.NORTH);
+		
+		theScores.setOpaque(false);
 		return theScores;
 	}
 	
