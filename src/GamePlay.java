@@ -34,8 +34,8 @@ public abstract class GamePlay extends JPanel{
 	private BufferedImage pacmanImage;
 	
 	private int pacmanDirection = UP;
-	private int pacmanX = 260;
-	private int pacmanY = 400;
+	private int pacmanX = 280;
+	private int pacmanY = 300;
 	
     private static final int UP = 1;
     private static final int DOWN = 2;
@@ -52,6 +52,10 @@ public abstract class GamePlay extends JPanel{
 	private static final int BOTTOM_SCREEN_EDGE = 800;
 	private static final int LEFT_SCREEN_EDGE = -15;
 	private static final int RIGHT_SCREEN_EDGE = 570;
+	
+	
+	public static final int GAME_PANEL_WIDTH = 550;
+	public static final int GAME_PANEL_HEIGHT = 630;
     
     private final Timer timer;
     private final Timer mouthTimer;
@@ -59,10 +63,12 @@ public abstract class GamePlay extends JPanel{
     
     private boolean mouthOpen = true;
     
+    private Maze maze;
 	
 	
 	public GamePlay(JFrame parent) {
 		this.parent = parent;
+		this.maze = new Maze();
 		
 		
 		ImageIcon blackImg = null;
@@ -184,32 +190,26 @@ public abstract class GamePlay extends JPanel{
      * @return gamePanel
      */
 	public JPanel getGamePanel() {
-		JPanel gamePanel = new JPanel() {
-			private static final int BG_WIDTH = 500;
-			private static final int BG_HEIGHT = 570;
-			
-			private static final int PACMAN_SIZE = 25;
-			
-			
-			@Override
-			protected void paintComponent(Graphics g) {
-				super.paintComponent(g);
-				
-				
-				//Draw background
-				Image backgroundImg = backgroundImage.getScaledInstance(BG_WIDTH, BG_HEIGHT, Image.SCALE_SMOOTH);
-				g.drawImage(backgroundImg, 0, 0, BG_WIDTH, BG_HEIGHT, this);
-				
-				
-				//Draw pacman
-				g.drawImage(pacmanImage, pacmanX, pacmanY, PACMAN_SIZE, PACMAN_SIZE, this);
-			}
-			
-		};
-		gamePanel.setBorder(null);
-		gamePanel.setSize(550, 570);
-		return gamePanel;
+	    JPanel gamePanel = new JPanel() {
+	        private static final int PACMAN_SIZE = 25;
+	        
+	        @Override
+	        protected void paintComponent(Graphics g) {
+	            super.paintComponent(g);
+	            
+	            // Draw the maze
+	            maze.paintComponent(g);
+	            
+	            // Draw Pacman
+	            g.drawImage(pacmanImage, pacmanX, pacmanY, PACMAN_SIZE, PACMAN_SIZE, this);
+	        }
+	        
+	    };
+	    gamePanel.setBorder(null);
+	    gamePanel.setSize(GAME_PANEL_WIDTH, GAME_PANEL_HEIGHT);
+	    return gamePanel;
 	}
+
 	
 	
 	private void setKeyBindings() {
@@ -259,35 +259,38 @@ public abstract class GamePlay extends JPanel{
         }
     }
     
+
     public void updateSprites() {
+  
     	
-    	if (pacmanDirection == UP && pacmanY > TOP_GAME_BORDER) 
+    	if (pacmanDirection == UP && !maze.isWall(pacmanX, pacmanY - SPEED)) 
     	{
     		pacmanY -= SPEED;
     		pacmanImage = pacmanUpImage;
     	}
-    	else if (pacmanDirection == DOWN && pacmanY  < BOTTOM_GAME_BORDER)
+    	else if (pacmanDirection == DOWN && !maze.isWall(pacmanX, pacmanY + SPEED))
     	{
     		pacmanY += SPEED;
     		pacmanImage = pacmanDownImage;
     	}
-    	else if (pacmanDirection == LEFT)
+    	else if (pacmanDirection == LEFT && !maze.isWall(pacmanX - SPEED, pacmanY))
     	{
     		pacmanX -= SPEED;
     		pacmanImage = pacmanLeftImage;
     	}
-    	if (pacmanDirection == RIGHT) {
+    	if (pacmanDirection == RIGHT && !maze.isWall(pacmanX + SPEED, pacmanY)) {
     		pacmanX += SPEED;
     		pacmanImage = pacmanRightImage;
     	}
-    		
+   
+        
     	//check for edge of screen
-    	
+    	/*
     	if (pacmanY <= TOP_SCREEN_EDGE) pacmanY = TOP_SCREEN_EDGE;
     	if (pacmanY >= BOTTOM_SCREEN_EDGE) pacmanY = BOTTOM_SCREEN_EDGE;
     	if (pacmanX <= LEFT_SCREEN_EDGE && pacmanDirection == LEFT) pacmanX = RIGHT_SCREEN_EDGE;
     	if (pacmanX >= RIGHT_SCREEN_EDGE && pacmanDirection == RIGHT) pacmanX = LEFT_SCREEN_EDGE;
-    	
+    	*/
    
     	
     	
