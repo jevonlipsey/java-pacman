@@ -56,6 +56,8 @@ public abstract class GamePlay extends JPanel{
 	
 	public static final int GAME_PANEL_WIDTH = 550;
 	public static final int GAME_PANEL_HEIGHT = 630;
+	
+	private static final int PACMAN_SIZE = 25;
     
     private final Timer timer;
     private final Timer mouthTimer;
@@ -191,7 +193,7 @@ public abstract class GamePlay extends JPanel{
      */
 	public JPanel getGamePanel() {
 	    JPanel gamePanel = new JPanel() {
-	        private static final int PACMAN_SIZE = 25;
+	        
 	        
 	        @Override
 	        protected void paintComponent(Graphics g) {
@@ -268,7 +270,7 @@ public abstract class GamePlay extends JPanel{
     		pacmanY -= SPEED;
     		pacmanImage = pacmanUpImage;
     	}
-    	else if (pacmanDirection == DOWN && !maze.isWall(pacmanX, pacmanY + SPEED))
+    	else if (pacmanDirection == DOWN && !maze.isWall(pacmanX, pacmanY + SPEED + PACMAN_SIZE))
     	{
     		pacmanY += SPEED;
     		pacmanImage = pacmanDownImage;
@@ -278,7 +280,7 @@ public abstract class GamePlay extends JPanel{
     		pacmanX -= SPEED;
     		pacmanImage = pacmanLeftImage;
     	}
-    	if (pacmanDirection == RIGHT && !maze.isWall(pacmanX + SPEED, pacmanY)) {
+    	if (pacmanDirection == RIGHT && !maze.isWall(pacmanX + SPEED + PACMAN_SIZE, pacmanY)) {
     		pacmanX += SPEED;
     		pacmanImage = pacmanRightImage;
     	}
