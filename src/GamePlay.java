@@ -34,6 +34,11 @@ public abstract class GamePlay extends JPanel{
     private static final int LEFT = 3;
     private static final int RIGHT = 4;
     
+    private static final int TOP_SCREEN_EDGE = -30;
+    private static final int BOTTOM_SCREEN_EDGE = 800;
+    private static final int LEFT_SCREEN_EDGE = -30;
+    private static final int RIGHT_SCREEN_EDGE = 600;
+    
     private static final int SPEED = 3;
     
     private final Timer timer;
@@ -144,6 +149,9 @@ public abstract class GamePlay extends JPanel{
     }
     
     public void updateSprites() {
+    	
+    	//Update pacman movement ==========================================================================
+    	
     	if (pacmanDirection == UP) {
     		pacmanY -= SPEED;
     		pacmanImage = pacmanUpImage;
@@ -161,6 +169,15 @@ public abstract class GamePlay extends JPanel{
     		pacmanImage = pacmanRightImage;
     	}
     		
+    	//check for edge of screen
+    	
+    	if (pacmanY <= TOP_SCREEN_EDGE) pacmanY = TOP_SCREEN_EDGE;
+    	if (pacmanY >= BOTTOM_SCREEN_EDGE) pacmanY = BOTTOM_SCREEN_EDGE;
+    	if (pacmanX <= LEFT_SCREEN_EDGE && pacmanDirection == LEFT) pacmanX = RIGHT_SCREEN_EDGE;
+    	if (pacmanX >= RIGHT_SCREEN_EDGE && pacmanDirection == RIGHT) pacmanX = LEFT_SCREEN_EDGE;
+    	
+   
+    	
     	
     	SwingUtilities.invokeLater(() -> {
             repaint();
