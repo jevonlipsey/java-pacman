@@ -47,6 +47,7 @@ public abstract class GamePlay extends JPanel{
     private static final int BOTTOM_GAME_BORDER = 520;
     private static final int TOP_GAME_BORDER = 23;
     
+    private static final int RIGHT_BORDER = 570;
 	private static final int TOP_SCREEN_EDGE = -30;
 	private static final int BOTTOM_SCREEN_EDGE = 800;
 	private static final int LEFT_SCREEN_EDGE = -15;
@@ -57,6 +58,7 @@ public abstract class GamePlay extends JPanel{
     private final long startTime;
     
     private boolean mouthOpen = true;
+    
 	
 	
 	public GamePlay(JFrame parent) {
@@ -121,12 +123,8 @@ public abstract class GamePlay extends JPanel{
         
         mouthTimer = new Timer(85, actionEvent -> updateMouth());
         mouthTimer.start();
-        
-        
+               
         startTime = System.currentTimeMillis();
-        
-        
-        
 	}
 	
 	 /**
@@ -290,8 +288,7 @@ public abstract class GamePlay extends JPanel{
     	if (pacmanX <= LEFT_SCREEN_EDGE && pacmanDirection == LEFT) pacmanX = RIGHT_SCREEN_EDGE;
     	if (pacmanX >= RIGHT_SCREEN_EDGE && pacmanDirection == RIGHT) pacmanX = LEFT_SCREEN_EDGE;
     	
-    	
-    	
+   
     	
     	
     	SwingUtilities.invokeLater(() -> {
@@ -304,12 +301,12 @@ public abstract class GamePlay extends JPanel{
     
     public void updateMouth()
     {
-    	// open and closes mouth
-    			if (!mouthOpen) {
-    				
-    	    		pacmanImage = pacmanClosedImage;
-    	    	}
-    	    	mouthOpen = !mouthOpen;
+	    // open and closes mouth
+	    if (!mouthOpen)
+	    {
+	    pacmanImage = pacmanClosedImage;
+	    }
+	    mouthOpen = !mouthOpen;
     }
 	
 	public abstract BufferedImage getBackgroundImage();
