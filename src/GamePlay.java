@@ -53,6 +53,7 @@ public abstract class GamePlay extends JPanel{
 	private static final int RIGHT_SCREEN_EDGE = 570;
     
     private final Timer timer;
+    private final Timer mouthTimer;
     private final long startTime;
     
     private boolean mouthOpen = true;
@@ -117,7 +118,15 @@ public abstract class GamePlay extends JPanel{
         // Create a timer to continuously update the sprites and objects
         timer = new Timer(20, actionEvent -> updateSprites());
         timer.start();
+        
+        mouthTimer = new Timer(85, actionEvent -> updateMouth());
+        mouthTimer.start();
+        
+        
         startTime = System.currentTimeMillis();
+        
+        
+        
 	}
 	
 	 /**
@@ -282,17 +291,7 @@ public abstract class GamePlay extends JPanel{
     	if (pacmanX >= RIGHT_SCREEN_EDGE && pacmanDirection == RIGHT) pacmanX = LEFT_SCREEN_EDGE;
     	
     	
-    	// open and closes mouth
-		if (!mouthOpen) {
-			try {
-				Thread.sleep(25);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-			
-    		pacmanImage = pacmanClosedImage;
-    	}
-    	mouthOpen = !mouthOpen;
+    	
     	
     	
     	SwingUtilities.invokeLater(() -> {
@@ -301,6 +300,16 @@ public abstract class GamePlay extends JPanel{
             parent.getContentPane().repaint();
             parent.getContentPane().revalidate();
         });
+    }
+    
+    public void updateMouth()
+    {
+    	// open and closes mouth
+    			if (!mouthOpen) {
+    				
+    	    		pacmanImage = pacmanClosedImage;
+    	    	}
+    	    	mouthOpen = !mouthOpen;
     }
 	
 	public abstract BufferedImage getBackgroundImage();
