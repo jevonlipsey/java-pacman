@@ -123,8 +123,12 @@ public final class Maze extends JPanel {
     }
 
     public boolean isWall(int x, int y) {
-        int row = y / Maze.CELL;
-        int column = x / Maze.CELL;
+        int row = (y / Maze.CELL) % tileHeight;
+        if (row < 0) row += tileHeight; // wrap around to the bottom if y is negative
+
+        int column = (x / Maze.CELL) % tileWidth;
+        if (column < 0) column += tileWidth; // wrap around to the right if x is negative
+
         return cells[row][column].isWall();
     }
 

@@ -57,7 +57,7 @@ public abstract class GamePlay extends JPanel{
 	public static final int GAME_PANEL_WIDTH = 550;
 	public static final int GAME_PANEL_HEIGHT = 630;
 	
-	private static final int PACMAN_SIZE = 25;
+	private static final int PACMAN_SIZE = 20;
     
     private final Timer timer;
     private final Timer mouthTimer;
@@ -129,7 +129,7 @@ public abstract class GamePlay extends JPanel{
         timer = new Timer(20, actionEvent -> updateSprites());
         timer.start();
         
-        mouthTimer = new Timer(85, actionEvent -> updateMouth());
+        mouthTimer = new Timer(65, actionEvent -> updateMouth());
         mouthTimer.start();
                
         startTime = System.currentTimeMillis();
@@ -287,12 +287,12 @@ public abstract class GamePlay extends JPanel{
    
         
     	//check for edge of screen
-    	/*
+    	
     	if (pacmanY <= TOP_SCREEN_EDGE) pacmanY = TOP_SCREEN_EDGE;
     	if (pacmanY >= BOTTOM_SCREEN_EDGE) pacmanY = BOTTOM_SCREEN_EDGE;
     	if (pacmanX <= LEFT_SCREEN_EDGE && pacmanDirection == LEFT) pacmanX = RIGHT_SCREEN_EDGE;
     	if (pacmanX >= RIGHT_SCREEN_EDGE && pacmanDirection == RIGHT) pacmanX = LEFT_SCREEN_EDGE;
-    	*/
+    	
    
     	
     	
