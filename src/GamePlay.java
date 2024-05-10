@@ -42,18 +42,20 @@ public abstract class GamePlay extends JPanel{
     private static final int LEFT = 3;
     private static final int RIGHT = 4;
     
-    private static final int SPEED = 3;
+    private static final int SPEED = 4;
     
-    private static final int BOTTOM_BORDER = 740;
-    private static final int RIGHT_BORDER = 570;
+    private static final int BOTTOM_GAME_BORDER = 520;
+    private static final int TOP_GAME_BORDER = 23;
+    
 	private static final int TOP_SCREEN_EDGE = -30;
 	private static final int BOTTOM_SCREEN_EDGE = 800;
-	private static final int LEFT_SCREEN_EDGE = -30;
-	private static final int RIGHT_SCREEN_EDGE = 600;
+	private static final int LEFT_SCREEN_EDGE = -15;
+	private static final int RIGHT_SCREEN_EDGE = 570;
     
     private final Timer timer;
     private final long startTime;
     
+    private boolean mouthOpen = true;
 	
 	
 	public GamePlay(JFrame parent) {
@@ -68,7 +70,7 @@ public abstract class GamePlay extends JPanel{
 			pacmanDownImage = ImageIO.read(new File("pacmanDownOpen.png")); 
 			pacmanLeftImage = ImageIO.read(new File("pacmanLeftOpen.png")); 
 			pacmanRightImage = ImageIO.read(new File("pacmanRightOpen.png")); 
-			//pacmanClosedImage = ImageIO.read(new File("pacmanClosed.png")); 
+			pacmanClosedImage = ImageIO.read(new File("pacmanClosed.png")); 
 			
 			BufferedImage blackImage = ImageIO.read(new File("black.png"));
 			blackImg = new ImageIcon(blackImage.getScaledInstance(50, 800, Image.SCALE_SMOOTH));
@@ -252,17 +254,17 @@ public abstract class GamePlay extends JPanel{
     
     public void updateSprites() {
     	
-    	if (pacmanDirection == UP && pacmanY > 0) 
+    	if (pacmanDirection == UP && pacmanY > TOP_GAME_BORDER) 
     	{
     		pacmanY -= SPEED;
     		pacmanImage = pacmanUpImage;
     	}
-    	else if (pacmanDirection == DOWN && pacmanY  < BOTTOM_BORDER)
+    	else if (pacmanDirection == DOWN && pacmanY  < BOTTOM_GAME_BORDER)
     	{
     		pacmanY += SPEED;
     		pacmanImage = pacmanDownImage;
     	}
-    	else if (pacmanDirection == LEFT && pacmanX > 0)
+    	else if (pacmanDirection == LEFT)
     	{
     		pacmanX -= SPEED;
     		pacmanImage = pacmanLeftImage;
@@ -279,7 +281,18 @@ public abstract class GamePlay extends JPanel{
     	if (pacmanX <= LEFT_SCREEN_EDGE && pacmanDirection == LEFT) pacmanX = RIGHT_SCREEN_EDGE;
     	if (pacmanX >= RIGHT_SCREEN_EDGE && pacmanDirection == RIGHT) pacmanX = LEFT_SCREEN_EDGE;
     	
-   
+    	
+    	// open and closes mouth
+		if (!mouthOpen) {
+			try {
+				Thread.sleep(25);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			
+    		pacmanImage = pacmanClosedImage;
+    	}
+    	mouthOpen = !mouthOpen;
     	
     	
     	SwingUtilities.invokeLater(() -> {

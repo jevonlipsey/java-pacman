@@ -11,7 +11,7 @@ public class LayoutOne extends GamePlay {
 	public LayoutOne(JFrame parent) {
 		super(parent);
 		this.parent = parent;
-        this.setSize(600, 2200);
+        this.setSize(600, 800);
         setLayout(null);
 		
 	}
