@@ -9,7 +9,7 @@ import javax.swing.SwingUtilities;
  * Creates the main JFrame for the game
  */
 public class PacMan {
-
+	
 	
 	 /**
      * Main method that creates a JFrame for the game
