@@ -28,7 +28,7 @@ public final class Map extends JPanel
 	private static final int GAME_PANEL_WIDTH = 550;
 	private static final int GAME_PANEL_HEIGHT = 630;
 	
-    private String map = "testLevel.txt/";
+    private String map = "level1.txt/";
    
     private int tileWidth;
     private int tileHeight;

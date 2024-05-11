@@ -28,7 +28,7 @@ public abstract class GamePlay extends JPanel{
 	
 	// the width and height of the text map
 	private static final int tileWidth = 21;
-	private static final int tileHeight = 27; 
+	private static final int tileHeight = 26; 
 	 
 	public static final int GAME_PANEL_WIDTH = 550;
 	public static final int GAME_PANEL_HEIGHT = 630;
@@ -51,7 +51,7 @@ public abstract class GamePlay extends JPanel{
 	private int pacmanDirection = UP;
 	private int nextDirection = INVALID;
 	private int pacmanColumnn = 5;
-	private int pacmanRow = 10;
+	private int pacmanRow = 25;
 	private boolean pacMouthOpen = true;
 	
     private final Timer timer;
