@@ -167,10 +167,11 @@ public class Cell
     
     public boolean isWall() 
     {
-        // 'h', 'v', '1', '2', '3', '4' represent walls
+        // all cell types that represent walls
         return type == 'h' || type == 'v' || type == '1' 
         		|| type == '2' || type == '3' || type == '4'
-        		|| type == '5' || type == '6';
+        		|| type == 'u' || type == 'd'
+        		|| type == 'l' || type == 'r';
     }
 
 }
