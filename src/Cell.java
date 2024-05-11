@@ -83,7 +83,47 @@ public class Cell
             drawCorner(g, xBase, yBase);
 
             break;
-
+            
+        case 'u' :	// double corner facing up
+        	 xBase = x * CELL - CELL / 2;
+             yBase = y * CELL - CELL / 2;
+             drawCorner(g, xBase, yBase);
+             xBase = x * CELL + CELL / 2;
+             yBase = y * CELL - CELL / 2;
+             drawCorner(g, xBase, yBase);
+        	
+        	break;
+        	
+        case 'd': // double corner facing down
+        	 xBase = x * CELL - CELL / 2;
+             yBase = y * CELL + CELL / 2;
+             drawCorner(g, xBase, yBase);
+             xBase = x * CELL + CELL / 2;
+             yBase = y * CELL + CELL / 2;
+             drawCorner(g, xBase, yBase);
+             break;
+             
+        case 'l': // double corner facing left
+        	xBase = x * CELL - CELL / 2;
+            yBase = y * CELL - CELL / 2;
+            drawCorner(g, xBase, yBase);
+            xBase = x * CELL - CELL / 2;
+            yBase = y * CELL + CELL / 2;
+            drawCorner(g, xBase, yBase);
+            
+        	break;
+        	
+        case 'r': // double corner facing right
+        
+        	 xBase = x * CELL + CELL / 2;
+             yBase = y * CELL + CELL / 2;
+             drawCorner(g, xBase, yBase);
+             xBase = x * CELL + CELL / 2;
+             yBase = y * CELL - CELL / 2;
+             drawCorner(g, xBase, yBase);
+             
+             break;
+             
         case 'o' :
             break;    // empty navigable cell
 
@@ -128,7 +168,9 @@ public class Cell
     public boolean isWall() 
     {
         // 'h', 'v', '1', '2', '3', '4' represent walls
-        return type == 'h' || type == 'v' || type == '1' || type == '2' || type == '3' || type == '4';
+        return type == 'h' || type == 'v' || type == '1' 
+        		|| type == '2' || type == '3' || type == '4'
+        		|| type == '5' || type == '6';
     }
 
 }

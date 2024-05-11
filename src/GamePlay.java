@@ -49,22 +49,22 @@ public abstract class GamePlay extends JPanel{
 	private BufferedImage pacmanImage;
 	
 	private int pacmanDirection = UP;
-	private int nextDirection = INVALID;
+	private int nextDirection = UP;
 	private int pacmanColumnn = 5;
-	private int pacmanRow = 25;
+	private int pacmanRow = 24;
 	private boolean pacMouthOpen = true;
 	
     private final Timer timer;
     private final Timer mouthTimer;
     private final long startTime;
     
-    private Map maze;
+    private Map map;
 	
 	
 	public GamePlay(JFrame parent) 
 	{
 		this.parent = parent;
-		this.maze = new Map();
+		this.map = new Map();
 		
 		
 		ImageIcon blackImg = null;
@@ -116,10 +116,10 @@ public abstract class GamePlay extends JPanel{
         setKeyBindings();
 		
         // Create a timer to continuously update the sprites and objects
-        timer = new Timer(125, actionEvent -> updateSprites());
+        timer = new Timer(120, actionEvent -> updateSprites());
         timer.start();
         
-        mouthTimer = new Timer(70, actionEvent -> updateMouth());
+        mouthTimer = new Timer(50, actionEvent -> updateMouth());
         mouthTimer.start();
                
         startTime = System.currentTimeMillis();
@@ -195,7 +195,7 @@ public abstract class GamePlay extends JPanel{
 	            super.paintComponent(g);
 	            
 	            // Draw the maze
-	            maze.paintComponent(g);
+	            map.paintComponent(g);
 	            
 	            // Draw Pacman
 	            g.drawImage(pacmanImage, pacmanColumnn * Map.CELL, pacmanRow * Map.CELL, 
@@ -268,63 +268,72 @@ public abstract class GamePlay extends JPanel{
     public void updateSprites() 
     {
        
-            int nextRow = pacmanColumnn;
-            int nextColumn = pacmanRow;
+            int nextColumn = pacmanColumnn;
+            int nextRow = pacmanRow;
 
-            if (pacmanDirection == UP && !maze.isWall(pacmanColumnn, pacmanRow - 1))
+            if (pacmanDirection == UP && !map.isWall(pacmanColumnn, pacmanRow - 1))
             {
-                nextColumn = pacmanRow - 1;
+                nextRow = pacmanRow - 1;
                 pacmanImage = pacmanUpImage;
             } 
-            else if (pacmanDirection == DOWN && !maze.isWall(pacmanColumnn, pacmanRow + 1))
+            else if (pacmanDirection == DOWN && !map.isWall(pacmanColumnn, pacmanRow + 1))
             {
-                nextColumn = pacmanRow + 1;
+                nextRow = pacmanRow + 1;
                 pacmanImage = pacmanDownImage;
             }
-            else if (pacmanDirection == LEFT && !maze.isWall(pacmanColumnn - 1 , pacmanRow)) 
+            else if (pacmanDirection == LEFT && !map.isWall(pacmanColumnn - 1 , pacmanRow)) 
             {
-                nextRow = pacmanColumnn - 1;
+                nextColumn = pacmanColumnn - 1;
                 pacmanImage = pacmanLeftImage;
             } 
-            else if (pacmanDirection == RIGHT && !maze.isWall(pacmanColumnn + 1, pacmanRow)) 
+            else if (pacmanDirection == RIGHT && !map.isWall(pacmanColumnn + 1, pacmanRow)) 
             {
-                nextRow = pacmanColumnn + 1;
+                nextColumn = pacmanColumnn + 1;
                 pacmanImage = pacmanRightImage;
             }
 
-            // Check if a move in the next direction is valid
-            if (!maze.isWall(nextColumn * Map.CELL, nextRow * Map.CELL)) 
+            // Check if current direction is valid
+            if (!map.isWall(nextRow * Map.CELL, nextColumn * Map.CELL)) 
             {
-                pacmanColumnn = nextRow;
-                pacmanRow = nextColumn;
+                pacmanColumnn = nextColumn;
+                pacmanRow = nextRow;
             }
-
-            // Check if a move in the next direction is valid
-            if (nextDirection != -1)
+            
+            
+       
+            // Check if next direction is valid
+            if (nextDirection != INVALID)
             {
                 if (nextDirection == UP) 
                 {
-                    nextColumn = pacmanRow - 1;
+                    nextRow = pacmanRow - 1;
                 }
                 else if (nextDirection == DOWN)
                 {
-                    nextColumn = pacmanRow + 1;
+                    nextRow = pacmanRow + 1;
                 } 
                 else if (nextDirection == LEFT)
                 {
-                    nextRow = pacmanColumnn - 1;
-                } else if (nextDirection == RIGHT) {
-                    nextRow = pacmanColumnn + 1;
+                    nextColumn = pacmanColumnn - 1;
+                } 
+                else if (nextDirection == RIGHT)
+                {
+                    nextColumn = pacmanColumnn + 1;
                 }
 
-                if (!maze.isWall(nextColumn * Map.CELL, nextRow * Map.CELL)) 
+                if (!map.isWall(nextRow * Map.CELL, nextColumn * Map.CELL)) 
                 {
                     pacmanDirection = nextDirection;
-                    nextDirection = -1;
+                   // nextDirection = INVALID;
+                    
                 }
             }
+            
+           
+            
+            
 
-            // Check for edge of screen
+            // Check for edge of screen to cross over
             if (pacmanColumnn < 0) pacmanColumnn = tileWidth - 1;
             if (pacmanColumnn >= tileWidth) pacmanColumnn = 0;
             if (pacmanRow < 0) pacmanRow = tileHeight - 1;

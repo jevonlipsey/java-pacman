@@ -30,8 +30,8 @@ public final class Map extends JPanel
 	
     private String map = "level1.txt/";
    
-    private int tileWidth;
-    private int tileHeight;
+    private int tileWidth =21;
+    private int tileHeight =27;
     
     
     private Cell[][] cells;
