@@ -20,54 +20,61 @@ import javax.swing.JPanel;
  * array of Cell objects, and renders the maze on screen.
  *
  */
-public final class Maze extends JPanel {
-    final static int CELL                = 12;
+public final class Map extends JPanel
+{
+	
+    final static int CELL = 24;
 
 	private static final int GAME_PANEL_WIDTH = 550;
 	private static final int GAME_PANEL_HEIGHT = 630;
 	
-    private int      ghostInitialColumn  = 13;
-    private int      ghostInitialRow     = 21;
-    private int      lives               = 3;
-    private String   map                 = "level2.txt/";
-    private int      pacmanInitialColumn = 7;
-    private int      pacmanInitialRow    = 21;
-    private int      score               = 0;
-    private int      tileHeight;
-    private int      tileWidth;
+    private String map = "testLevel.txt/";
+   
+    private int tileWidth;
+    private int tileHeight;
+    
+    
     private Cell[][] cells;
 
-    public Maze() {
-        createCellArray(map);
+    public Map()
+    {
+        createMap(map);
         setPreferredSize(new Dimension(GAME_PANEL_WIDTH, GAME_PANEL_HEIGHT));
-       
         repaint();
     }
 
     /**
      * Reads from the map file and create the two dimensional array
      */
-    private void createCellArray(String mapFile) {
+    private void createMap(String mapFile) 
+    {
 
         // Scanner object to read from map file
-        Scanner           fileReader;
+        Scanner fileReader;
         ArrayList<String> lineList = new ArrayList<String>();
 
         // Attempt to load the maze map file
-        try {
+        try 
+        {
             fileReader = new Scanner(new File(mapFile));
 
-            while (true) {
+            while (true) 
+            {
                 String line = null;
 
-                try {
+                try 
+                {
                     line = fileReader.nextLine();
-                } catch (Exception eof) {
+                } 
+                catch (Exception eof) 
+                {
 
-                    // throw new A5FatalException("Could not read resource");
+                	// eof.printStackTrace();
+                	//TODO: has errors on stacktrace, unsure why
                 }
 
-                if (line == null) {
+                if (line == null)
+                {
                     break;
                 }
 
@@ -80,17 +87,21 @@ public final class Maze extends JPanel {
             // Create the cells
             cells = new Cell[tileHeight][tileWidth];
 
-            for (int row = 0; row < tileHeight; row++) {
+            for (int row = 0; row < tileHeight; row++)
+            {
                 String line = lineList.get(row);
 
-                for (int column = 0; column < tileWidth; column++) {
+                for (int column = 0; column < tileWidth; column++)
+                {
                     char type = line.charAt(column);
 
                     cells[row][column] = new Cell(column, row, type);
                 }
             }
-        } catch (FileNotFoundException e) {
-            System.out.println("Maze map file not found");
+        } 
+        catch (FileNotFoundException e)
+        {
+            System.out.println("Map file not found");
         }
     }
 
@@ -101,16 +112,18 @@ public final class Maze extends JPanel {
      * @param g Graphics object
      */
     @Override
-    public void paintComponent(Graphics g) {
+    public void paintComponent(Graphics g)
+    {
         super.paintComponent(g);
         g.setColor(Color.BLACK);
         g.fillRect(0, 0, tileWidth * CELL, tileHeight * CELL);
 
         // Outer loop loops through each row in the array
-        for (int row = 0; row < tileHeight; row++) {
-
+        for (int row = 0; row < tileHeight; row++)
+        {
             // Inner loop loops through each column in the array
-            for (int column = 0; column < tileWidth; column++) {
+            for (int column = 0; column < tileWidth; column++) 
+            {
                 cells[row][column].drawBackground(g);
             }
         }
@@ -118,20 +131,18 @@ public final class Maze extends JPanel {
  
     }
 
-    public Cell[][] getCells() {
+    public Cell[][] getCells()
+    {
         return cells;
     }
 
-    public boolean isWall(int x, int y) {
-        int row = (y / Maze.CELL) % tileHeight;
-        if (row < 0) row += tileHeight; // wrap around to the bottom if y is negative
-
-        int column = (x / Maze.CELL) % tileWidth;
-        if (column < 0) column += tileWidth; // wrap around to the right if x is negative
-
+    public boolean isWall(int column, int row) 
+    {
+        if (row < 0 || row >= tileHeight || column < 0 || column >= tileWidth)
+        {
+            return false; 
+        }
         return cells[row][column].isWall();
     }
-
-
 
 }

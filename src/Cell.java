@@ -4,22 +4,24 @@ import java.awt.*;
 import java.awt.geom.Ellipse2D;
 
 public class Cell {
-    final int      CELL = 12;
-    protected char type;
-    protected int  x, y;
+    private static final int CELL = 24;
+    private char type;
+    private int  x;
+    private int y;
 
     /*
      * Constructor
      *
      */
-    public Cell(int x, int y, char type) {
+    public Cell(int x, int y, char type) 
+    {
         this.type = type;
-        this.x    = x;
-        this.y    = y;
+        this.x = x;
+        this.y = y;
     }
 
     /*
-     * Gets the type
+     * Gets the type of cell
      *
      */
     public char getType() {
@@ -84,27 +86,27 @@ public class Cell {
         case 'o' :
             break;    // empty navigable cell
 
-        case 'd' :    // navigable cell with pill
+        case 'p' :    // navigable cell with pill
             g.setColor(Color.WHITE);
             g.fillRect(x * CELL + CELL / 2 - 1, y * CELL + CELL / 2 - 1, 3, 3);
 
             break;
 
-        case 'p' :    // navigable cell with power pellet
+        case 'P' :    // navigable cell with power pellet
             g.setColor(Color.PINK);
             g.fillOval(x * CELL + CELL / 2 - 7, y * CELL + CELL / 2 - 7, 13, 13);
 
             break;
 
         case 'x' :    // empty non-navigable cell
-        case 'g' :    // the Corral
+        case 'g' :    // gate opening / ghost corral
         default :
             break;
         }
     }
 
     /*
-     * Draw 3px rounded corner
+     * Draws a rounded corner
      *
      */
     public void drawCorner(Graphics g, int xBase, int yBase) {
