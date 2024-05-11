@@ -3,7 +3,8 @@
 import java.awt.*;
 import java.awt.geom.Ellipse2D;
 
-public class Cell {
+public class Cell
+{
     private static final int CELL = 24;
     private char type;
     private int  x;
@@ -24,7 +25,8 @@ public class Cell {
      * Gets the type of cell
      *
      */
-    public char getType() {
+    public char getType()
+    {
         return type;
     }
 
@@ -32,7 +34,8 @@ public class Cell {
      * Draw the cell
      *
      */
-    public void drawBackground(Graphics g) {
+    public void drawBackground(Graphics g) 
+    {
         int xBase = 0;
         int yBase = 0;
 
@@ -109,7 +112,8 @@ public class Cell {
      * Draws a rounded corner
      *
      */
-    public void drawCorner(Graphics g, int xBase, int yBase) {
+    public void drawCorner(Graphics g, int xBase, int yBase)
+    {
         Graphics2D g2      = (Graphics2D) g;
         Rectangle  oldClip = g.getClipBounds();
 
@@ -123,7 +127,8 @@ public class Cell {
         g2.setClip(oldClip);
     }
     
-    public boolean isWall() {
+    public boolean isWall() 
+    {
         // 'h', 'v', '1', '2', '3', '4' represent walls
         return type == 'h' || type == 'v' || type == '1' || type == '2' || type == '3' || type == '4';
     }
