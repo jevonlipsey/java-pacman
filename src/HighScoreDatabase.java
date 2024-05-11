@@ -77,18 +77,6 @@ public class HighScoreDatabase {
 			e.printStackTrace();
 		}
     }
-
-    public static void main(String[] args) {
-    	HighScoreDatabase test = new HighScoreDatabase();
-    	
-    	test.addNewScore(23, "Jevon");
-    	test.addNewScore(32, "Dax");
-    	test.addNewScore(72, "Talon");
-    	test.addNewScore(42, "Erin");
-    	
-    	System.out.println(test.getTopNScores(3));
-    	test.clearHighScores();
-    }
 }
 
 
