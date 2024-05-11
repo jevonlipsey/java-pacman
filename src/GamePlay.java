@@ -291,9 +291,6 @@ public abstract class GamePlay extends JPanel{
     	if (pacmanX >= RIGHT_SCREEN_EDGE && pacmanDirection == RIGHT) pacmanX = LEFT_SCREEN_EDGE;
     	
     	
-    	
-    	
-    	
     	SwingUtilities.invokeLater(() -> {
             repaint();
             gamePanel.repaint();

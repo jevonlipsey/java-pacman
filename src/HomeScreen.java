@@ -37,8 +37,6 @@ public class HomeScreen extends JPanel {
         
         JButton playButton = createTransparentButton();
         JButton scoresButton = createTransparentButton();
-        
-        add(playButton);
 		
         playButton.setBounds(170, 220, 260, 155);
         scoresButton.setBounds(170, 410, 260, 155);
