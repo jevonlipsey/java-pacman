@@ -19,13 +19,28 @@ import javax.imageio.ImageIO;
  */
 public abstract class GamePlay extends JPanel{
 	
+	
+	private static final int UP = 1;
+	private static final int DOWN = 2;
+	private static final int LEFT = 3;
+	private static final int RIGHT = 4;
+	private static final int INVALID = -1;
+	
+	// the width and height of the text map
+	private static final int tileWidth = 21;
+	private static final int tileHeight = 27; 
+	 
+	public static final int GAME_PANEL_WIDTH = 550;
+	public static final int GAME_PANEL_HEIGHT = 630;
+		
+	private static final int PACMAN_SIZE = 20;
+
 	private final JFrame parent;
 	private JPanel gamePanel;
 	private JPanel scorePanel;
 	private JPanel infoPanel;
 	private JLabel currentScore;
 	
-	private BufferedImage backgroundImage;
 	private BufferedImage pacmanUpImage;
 	private BufferedImage pacmanDownImage;
 	private BufferedImage pacmanLeftImage;
@@ -34,41 +49,28 @@ public abstract class GamePlay extends JPanel{
 	private BufferedImage pacmanImage;
 	
 	private int pacmanDirection = UP;
-	private int pacmanX = 260;
-	private int pacmanY = 400;
+	private int nextDirection = INVALID;
+	private int pacmanColumnn = 5;
+	private int pacmanRow = 10;
+	private boolean pacMouthOpen = true;
 	
-    private static final int UP = 1;
-    private static final int DOWN = 2;
-    private static final int LEFT = 3;
-    private static final int RIGHT = 4;
-    
-    private static final int SPEED = 4;
-    
-    private static final int BOTTOM_GAME_BORDER = 520;
-    private static final int TOP_GAME_BORDER = 23;
-    
-    private static final int RIGHT_BORDER = 570;
-	private static final int TOP_SCREEN_EDGE = -30;
-	private static final int BOTTOM_SCREEN_EDGE = 800;
-	private static final int LEFT_SCREEN_EDGE = -15;
-	private static final int RIGHT_SCREEN_EDGE = 570;
-    
     private final Timer timer;
     private final Timer mouthTimer;
     private final long startTime;
     
-    private boolean mouthOpen = true;
-    
+    private Map maze;
 	
 	
-	public GamePlay(JFrame parent) {
+	public GamePlay(JFrame parent) 
+	{
 		this.parent = parent;
+		this.maze = new Map();
 		
 		
 		ImageIcon blackImg = null;
 		
-		try {
-			//TODO add images
+		try
+		{
 			pacmanUpImage = ImageIO.read(new File("pacmanUpOpen.png")); 
 			pacmanDownImage = ImageIO.read(new File("pacmanDownOpen.png")); 
 			pacmanLeftImage = ImageIO.read(new File("pacmanLeftOpen.png")); 
@@ -77,14 +79,12 @@ public abstract class GamePlay extends JPanel{
 			
 			BufferedImage blackImage = ImageIO.read(new File("black.png"));
 			blackImg = new ImageIcon(blackImage.getScaledInstance(50, 800, Image.SCALE_SMOOTH));
-			
-			backgroundImage = getBackgroundImage(); 
 		}
-		catch(IOException e) {
+		catch(IOException e)
+		{
 			e.printStackTrace();
 		}
-		
-		
+
 		pacmanImage = pacmanUpImage;
 		
 		 //blank sides
@@ -111,17 +111,15 @@ public abstract class GamePlay extends JPanel{
 		infoPanel.setBounds(0, 640, infoPanel.getWidth(), infoPanel.getHeight());
         add(infoPanel);
         
-       
-        
         setVisible(true);
         
         setKeyBindings();
 		
         // Create a timer to continuously update the sprites and objects
-        timer = new Timer(20, actionEvent -> updateSprites());
+        timer = new Timer(125, actionEvent -> updateSprites());
         timer.start();
         
-        mouthTimer = new Timer(85, actionEvent -> updateMouth());
+        mouthTimer = new Timer(70, actionEvent -> updateMouth());
         mouthTimer.start();
                
         startTime = System.currentTimeMillis();
@@ -131,7 +129,8 @@ public abstract class GamePlay extends JPanel{
      * Sets up the scorePanel
      * @return scorePanel
      */
-	public JPanel getScorePanel() {
+	public JPanel getScorePanel()
+	{
 		JPanel scorePanel = new JPanel();
 		scorePanel.setBackground(Color.BLACK);
 		scorePanel.setSize(600, 70);
@@ -170,7 +169,8 @@ public abstract class GamePlay extends JPanel{
      * Sets up the infoPanel
      * @return infoPanel
      */
-	public JPanel getInfoPanel() {
+	public JPanel getInfoPanel() 
+	{
 		JPanel infoPanel = new JPanel();
 		
 		infoPanel.setBackground(Color.BLACK);
@@ -183,36 +183,35 @@ public abstract class GamePlay extends JPanel{
      * Sets up the gamePanel, adds the background, characters, and key bindings.
      * @return gamePanel
      */
-	public JPanel getGamePanel() {
-		JPanel gamePanel = new JPanel() {
-			private static final int BG_WIDTH = 500;
-			private static final int BG_HEIGHT = 570;
-			
-			private static final int PACMAN_SIZE = 25;
-			
-			
-			@Override
-			protected void paintComponent(Graphics g) {
-				super.paintComponent(g);
-				
-				
-				//Draw background
-				Image backgroundImg = backgroundImage.getScaledInstance(BG_WIDTH, BG_HEIGHT, Image.SCALE_SMOOTH);
-				g.drawImage(backgroundImg, 0, 0, BG_WIDTH, BG_HEIGHT, this);
-				
-				
-				//Draw pacman
-				g.drawImage(pacmanImage, pacmanX, pacmanY, PACMAN_SIZE, PACMAN_SIZE, this);
-			}
-			
-		};
-		gamePanel.setBorder(null);
-		gamePanel.setSize(550, 570);
-		return gamePanel;
+	public JPanel getGamePanel() 
+	{
+	    JPanel gamePanel = new JPanel() 
+	    {
+	        
+	        
+	        @Override
+	        protected void paintComponent(Graphics g) 
+	        {
+	            super.paintComponent(g);
+	            
+	            // Draw the maze
+	            maze.paintComponent(g);
+	            
+	            // Draw Pacman
+	            g.drawImage(pacmanImage, pacmanColumnn * Map.CELL, pacmanRow * Map.CELL, 
+	            			PACMAN_SIZE, PACMAN_SIZE, this);
+	        }
+	        
+	    };
+	    gamePanel.setBorder(null);
+	    gamePanel.setSize(GAME_PANEL_WIDTH, GAME_PANEL_HEIGHT);
+	    return gamePanel;
 	}
+
 	
 	
-	private void setKeyBindings() {
+	private void setKeyBindings()
+	{
         InputMap inputMap = this.getInputMap(JPanel.WHEN_IN_FOCUSED_WINDOW);
         
         inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_UP,0, false), "up arrow pressed");
@@ -232,81 +231,134 @@ public abstract class GamePlay extends JPanel{
 
     }
 
-    public class Pressed extends AbstractAction {
+    public class Pressed extends AbstractAction
+    {
         String key;
-        protected Pressed(String key){
+        protected Pressed(String key)
+        {
             this.key = key;
         }
 
         @Override
-        public void actionPerformed(ActionEvent e) {
-            if (this.key.equals("up")) {
-            	pacmanDirection = UP;
+        public void actionPerformed(ActionEvent e) 
+        {
+            if (this.key.equals("up"))
+            {
+            	nextDirection = UP;
             }
 
-            if (this.key.equals("down")){
-            	pacmanDirection = DOWN;
+            if (this.key.equals("down"))
+            {
+            	nextDirection = DOWN;
                 
             }
-            if (this.key.equals("left")){
-            	pacmanDirection = LEFT;
+            if (this.key.equals("left"))
+            {
+            	nextDirection = LEFT;
             }
             
-            if (this.key.equals("right")){
-            	pacmanDirection = RIGHT;
+            if (this.key.equals("right"))
+            {
+            	nextDirection = RIGHT;
             }
 
         }
     }
     
-    public void updateSprites() {
-    	
-    	if (pacmanDirection == UP && pacmanY > TOP_GAME_BORDER) 
-    	{
-    		pacmanY -= SPEED;
-    		pacmanImage = pacmanUpImage;
-    	}
-    	else if (pacmanDirection == DOWN && pacmanY  < BOTTOM_GAME_BORDER)
-    	{
-    		pacmanY += SPEED;
-    		pacmanImage = pacmanDownImage;
-    	}
-    	else if (pacmanDirection == LEFT)
-    	{
-    		pacmanX -= SPEED;
-    		pacmanImage = pacmanLeftImage;
-    	}
-    	if (pacmanDirection == RIGHT) {
-    		pacmanX += SPEED;
-    		pacmanImage = pacmanRightImage;
-    	}
-    		
-    	//check for edge of screen
-    	
-    	if (pacmanY <= TOP_SCREEN_EDGE) pacmanY = TOP_SCREEN_EDGE;
-    	if (pacmanY >= BOTTOM_SCREEN_EDGE) pacmanY = BOTTOM_SCREEN_EDGE;
-    	if (pacmanX <= LEFT_SCREEN_EDGE && pacmanDirection == LEFT) pacmanX = RIGHT_SCREEN_EDGE;
-    	if (pacmanX >= RIGHT_SCREEN_EDGE && pacmanDirection == RIGHT) pacmanX = LEFT_SCREEN_EDGE;
-    	
-   
-    	
-    	
-    	SwingUtilities.invokeLater(() -> {
-            repaint();
-            gamePanel.repaint();
-            parent.getContentPane().repaint();
-            parent.getContentPane().revalidate();
-        });
+    public void updateSprites() 
+    {
+       
+            int nextRow = pacmanColumnn;
+            int nextColumn = pacmanRow;
+
+            if (pacmanDirection == UP && !maze.isWall(pacmanColumnn, pacmanRow - 1))
+            {
+                nextColumn = pacmanRow - 1;
+                pacmanImage = pacmanUpImage;
+            } 
+            else if (pacmanDirection == DOWN && !maze.isWall(pacmanColumnn, pacmanRow + 1))
+            {
+                nextColumn = pacmanRow + 1;
+                pacmanImage = pacmanDownImage;
+            }
+            else if (pacmanDirection == LEFT && !maze.isWall(pacmanColumnn - 1 , pacmanRow)) 
+            {
+                nextRow = pacmanColumnn - 1;
+                pacmanImage = pacmanLeftImage;
+            } 
+            else if (pacmanDirection == RIGHT && !maze.isWall(pacmanColumnn + 1, pacmanRow)) 
+            {
+                nextRow = pacmanColumnn + 1;
+                pacmanImage = pacmanRightImage;
+            }
+
+            // Check if a move in the next direction is valid
+            if (!maze.isWall(nextColumn * Map.CELL, nextRow * Map.CELL)) 
+            {
+                pacmanColumnn = nextRow;
+                pacmanRow = nextColumn;
+            }
+
+            // Check if a move in the next direction is valid
+            if (nextDirection != -1)
+            {
+                if (nextDirection == UP) 
+                {
+                    nextColumn = pacmanRow - 1;
+                }
+                else if (nextDirection == DOWN)
+                {
+                    nextColumn = pacmanRow + 1;
+                } 
+                else if (nextDirection == LEFT)
+                {
+                    nextRow = pacmanColumnn - 1;
+                } else if (nextDirection == RIGHT) {
+                    nextRow = pacmanColumnn + 1;
+                }
+
+                if (!maze.isWall(nextColumn * Map.CELL, nextRow * Map.CELL)) 
+                {
+                    pacmanDirection = nextDirection;
+                    nextDirection = -1;
+                }
+            }
+
+            // Check for edge of screen
+            if (pacmanColumnn < 0) pacmanColumnn = tileWidth - 1;
+            if (pacmanColumnn >= tileWidth) pacmanColumnn = 0;
+            if (pacmanRow < 0) pacmanRow = tileHeight - 1;
+            if (pacmanRow >= tileHeight) pacmanRow = 0;
+
+         
+
+            SwingUtilities.invokeLater(() -> {
+                repaint();
+                gamePanel.repaint();
+                parent.getContentPane().repaint();
+                parent.getContentPane().revalidate();
+            });
+        
     }
     
     public void updateMouth()
     {
 	    // open and closes mouth
-	    if (!mouthOpen)
+	    if (!pacMouthOpen)
 	    {
 	    pacmanImage = pacmanClosedImage;
 	    }
-	    mouthOpen = !mouthOpen;
+	    
+	    pacMouthOpen = !pacMouthOpen;
+	    
+	    
+	    SwingUtilities.invokeLater(() -> {
+            repaint();
+            gamePanel.repaint();
+            parent.getContentPane().repaint();
+            parent.getContentPane().revalidate();
+        });
+	    
     }
 	
 	public abstract BufferedImage getBackgroundImage();
