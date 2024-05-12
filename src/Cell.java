@@ -27,6 +27,10 @@ public class Cell
     {
         return type;
     }
+    
+    public void setType(char type) {
+        this.type = type;
+    }
 
     /*
      * Draw the cell
