@@ -318,6 +318,34 @@ public abstract class GamePlay extends JPanel{
      * Updates the movement of the pacman and the ghosts on the screen
      */
     public void updateSprites() {
+    	
+    	updatePacman();
+        
+        updateMap();
+
+        SwingUtilities.invokeLater(() -> {
+            repaint();
+            gamePanel.repaint();
+            parent.getContentPane().repaint();
+            parent.getContentPane().revalidate();
+        });
+        
+    }
+    
+    public void updateMouth()
+    {
+	    // open and closes mouth
+	    if (!pacMouthOpen)
+	    {
+	    pacmanImage = pacmanClosedImage;
+	    }
+	    
+	    pacMouthOpen = !pacMouthOpen;
+	   
+    }
+    
+    public void updatePacman()
+    {
     	//Check for opening for the next direction clicked
     	if (nextDirection == UP && !map.isWall(pacmanColumn, pacmanRow - 1)) pacmanDirection = nextDirection;
     	else if (nextDirection == DOWN && !map.isWall(pacmanColumn, pacmanRow + 1)) pacmanDirection = nextDirection;
@@ -351,9 +379,15 @@ public abstract class GamePlay extends JPanel{
         if (pacmanColumn >= tileWidth) pacmanColumn = 0;
         if (pacmanRow < 0) pacmanRow = tileHeight - 1;
         if (pacmanRow >= tileHeight) pacmanRow = 0;
-
         
-        // update map food
+        
+        updateMouth();
+
+    }
+    
+    public void updateMap()
+    {
+    	// update map food
         if (map.getCells()[pacmanRow][pacmanColumn].getType() == 'p') {
             // Pacman is on a pill, so change the cell to an empty cell
             map.getCells()[pacmanRow][pacmanColumn].setType('o');
@@ -363,34 +397,6 @@ public abstract class GamePlay extends JPanel{
             // Pacman is on a pill, so change the cell to an empty cell
             map.getCells()[pacmanRow][pacmanColumn].setType('o');
         }
-
-        SwingUtilities.invokeLater(() -> {
-            repaint();
-            gamePanel.repaint();
-            parent.getContentPane().repaint();
-            parent.getContentPane().revalidate();
-        });
-        
-    }
-    
-    public void updateMouth()
-    {
-	    // open and closes mouth
-	    if (!pacMouthOpen)
-	    {
-	    pacmanImage = pacmanClosedImage;
-	    }
-	    
-	    pacMouthOpen = !pacMouthOpen;
-	    
-	    
-	    SwingUtilities.invokeLater(() -> {
-            repaint();
-            gamePanel.repaint();
-            parent.getContentPane().repaint();
-            parent.getContentPane().revalidate();
-        });
-	    
     }
     
     /**
