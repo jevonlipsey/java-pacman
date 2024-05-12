@@ -268,22 +268,41 @@ public abstract class GamePlay extends JPanel{
         {
             if (this.key.equals("up"))
             {
-            	nextDirection = UP;
+            	   if (!map.isWall(pacmanColumnn, pacmanRow - 1)) 
+                   {
+                       pacmanDirection = UP;
+                       nextDirection = UP;
+                   }
+            	   else nextDirection = UP;
             }
 
             if (this.key.equals("down"))
             {
-            	nextDirection = DOWN;
-                
+            	if (!map.isWall(pacmanColumnn, pacmanRow + 1)) 
+                {
+                    pacmanDirection = DOWN;
+                    nextDirection = DOWN;
+                }
+            	else nextDirection = DOWN;
             }
             if (this.key.equals("left"))
             {
-            	nextDirection = LEFT;
+            	if (!map.isWall(pacmanColumnn - 1, pacmanRow)) 
+                {
+                    pacmanDirection = LEFT;
+                    nextDirection = LEFT;
+                }
+            	else nextDirection = LEFT;
             }
             
             if (this.key.equals("right"))
             {
-            	nextDirection = RIGHT;
+            	if (!map.isWall(pacmanColumnn + 1, pacmanRow)) 
+                {
+                    pacmanDirection = RIGHT;
+                    nextDirection = RIGHT;
+                }
+            	else nextDirection = RIGHT;
             }
 
             if (this.key.equals("space"))
@@ -295,84 +314,52 @@ public abstract class GamePlay extends JPanel{
         }
     }
 
-    public void updateSprites() 
-    {
-       
-    	int nextColumn = pacmanColumnn;
-        int nextRow = pacmanRow;
+    /**
+     * Updates the movement of the pacman and the ghosts on the screen
+     */
+    public void updateSprites() {
+    	//Check for opening for the next direction clicked
+    	if (nextDirection == UP && !map.isWall(pacmanColumnn, pacmanRow - 1)) pacmanDirection = nextDirection;
+    	else if (nextDirection == DOWN && !map.isWall(pacmanColumnn, pacmanRow + 1)) pacmanDirection = nextDirection;
+    	else if (nextDirection == LEFT && !map.isWall(pacmanColumnn - 1, pacmanRow)) pacmanDirection = nextDirection;
+    	else if (nextDirection == RIGHT && !map.isWall(pacmanColumnn + 1, pacmanRow)) pacmanDirection = nextDirection;
 
-            if (pacmanDirection == UP && !map.isWall(pacmanColumnn, pacmanRow - 1))
-            {
-                nextRow = pacmanRow - 1;
-                pacmanImage = pacmanUpImage;
-            } 
-            else if (pacmanDirection == DOWN && !map.isWall(pacmanColumnn, pacmanRow + 1))
-            {
-                nextRow = pacmanRow + 1;
-                pacmanImage = pacmanDownImage;
-            }
-            else if (pacmanDirection == LEFT && !map.isWall(pacmanColumnn - 1, pacmanRow)) 
-            {
-                nextColumn = pacmanColumnn - 1;
-                pacmanImage = pacmanLeftImage;
-            } 
-            else if (pacmanDirection == RIGHT && !map.isWall(pacmanColumnn + 1, pacmanRow)) 
-            {
-                nextColumn = pacmanColumnn + 1;
-                pacmanImage = pacmanRightImage;
-            }
-
-            // Check if current direction is valid
-            if (!map.isWall(nextRow * Map.CELL, nextColumn * Map.CELL)) 
-            {
-                pacmanColumnn = nextColumn;
-                pacmanRow = nextRow;
-            }            
+    	if (pacmanDirection == UP && !map.isWall(pacmanColumnn, pacmanRow - 1))
+        {
+        	pacmanRow -= 1;
+            pacmanImage = pacmanUpImage;
             
-       
-            // Check if next direction is valid
-            if (nextDirection != INVALID)
-            {
-                if (nextDirection == UP) 
-                {
-                    nextRow = pacmanRow - 1;
-                }
-                else if (nextDirection == DOWN)
-                {
-                    nextRow = pacmanRow + 1;
-                } 
-                else if (nextDirection == LEFT)
-                {
-                    nextColumn = pacmanColumnn - 1;
-                } 
-                else if (nextDirection == RIGHT)
-                {
-                    nextColumn = pacmanColumnn + 1;
-                }
+        } 
+        else if (pacmanDirection == DOWN && !map.isWall(pacmanColumnn, pacmanRow + 1))
+        {
+            pacmanRow += 1;
+            pacmanImage = pacmanDownImage;
+        }
+        else if (pacmanDirection == LEFT && !map.isWall(pacmanColumnn - 1, pacmanRow)) 
+        {
+            pacmanColumnn -=1;
+            pacmanImage = pacmanLeftImage;
+        } 
+        else if (pacmanDirection == RIGHT && !map.isWall(pacmanColumnn + 1, pacmanRow)) 
+        {
+            pacmanColumnn += 1;
+            pacmanImage = pacmanRightImage;
+        }
 
-                if (!map.isWall(nextRow * Map.CELL, nextColumn * Map.CELL)) 
-                {
-                    pacmanDirection = nextDirection;
-                   // nextDirection = INVALID;
-                    
-                }
-            }
-            
+        // Check for edge of screen to cross over
+        if (pacmanColumnn < 0) pacmanColumnn = tileWidth - 1;
+        if (pacmanColumnn >= tileWidth) pacmanColumnn = 0;
+        if (pacmanRow < 0) pacmanRow = tileHeight - 1;
+        if (pacmanRow >= tileHeight) pacmanRow = 0;
 
-            // Check for edge of screen to cross over
-            if (pacmanColumnn < 0) pacmanColumnn = tileWidth - 1;
-            if (pacmanColumnn >= tileWidth) pacmanColumnn = 0;
-            if (pacmanRow < 0) pacmanRow = tileHeight - 1;
-            if (pacmanRow >= tileHeight) pacmanRow = 0;
+     
 
-         
-
-            SwingUtilities.invokeLater(() -> {
-                repaint();
-                gamePanel.repaint();
-                parent.getContentPane().repaint();
-                parent.getContentPane().revalidate();
-            });
+        SwingUtilities.invokeLater(() -> {
+            repaint();
+            gamePanel.repaint();
+            parent.getContentPane().repaint();
+            parent.getContentPane().revalidate();
+        });
         
     }
     
