@@ -294,7 +294,7 @@ public abstract class GamePlay extends JPanel{
                 nextRow = pacmanRow + 1;
                 pacmanImage = pacmanDownImage;
             }
-            else if (pacmanDirection == LEFT && !map.isWall(pacmanColumnn - 1 , pacmanRow)) 
+            else if (pacmanDirection == LEFT && !map.isWall(pacmanColumnn - 1, pacmanRow)) 
             {
                 nextColumn = pacmanColumnn - 1;
                 pacmanImage = pacmanLeftImage;
