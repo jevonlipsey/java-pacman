@@ -134,7 +134,7 @@ public abstract class GamePlay extends JPanel{
         timer = new Timer(120, actionEvent -> updateSprites());
         timer.start();
         
-        mouthTimer = new Timer(50, actionEvent -> updateMouth());
+        mouthTimer = new Timer(30, actionEvent -> updateMouth());
         mouthTimer.start();
                
         startTime = System.currentTimeMillis();
