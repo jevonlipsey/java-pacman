@@ -61,9 +61,7 @@ public class Leaderboard extends JPanel{
                 parent.getContentPane().revalidate();
                 parent.getContentPane().repaint();
             }
-        });
-
-   
+        });   
 
         backgroundPanel.add(playButton);
         backgroundPanel.add(menuButton);
