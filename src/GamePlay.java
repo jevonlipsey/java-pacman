@@ -79,6 +79,8 @@ public class GamePlay extends JPanel{
 		this.parent = parent;
 		thisGamePlayPanel = this;
 		this.map = new Map();
+		setSize(600, 800);
+		setLayout(null);
 		
 		
 		ImageIcon blackImg = null;
