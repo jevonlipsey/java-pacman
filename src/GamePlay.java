@@ -271,6 +271,7 @@ public abstract class GamePlay extends JPanel{
 
             if (this.key.equals("space"))
             {
+            	timer.stop();
             	showPauseOptionPane(); //TODO: add other functionality for the pause button
             }
 
@@ -341,9 +342,6 @@ public abstract class GamePlay extends JPanel{
                 }
             }
             
-           
-            
-            
 
             // Check for edge of screen to cross over
             if (pacmanColumnn < 0) pacmanColumnn = tileWidth - 1;
@@ -401,6 +399,7 @@ public abstract class GamePlay extends JPanel{
             public void actionPerformed(ActionEvent e) {
                 Window parentWindow = SwingUtilities.getWindowAncestor(continueButton);
                 parentWindow.dispose();
+                timer.start();
                 //TODO: implement resume game
             }
         });
