@@ -4,7 +4,9 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.Image;
+import java.awt.Window;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -36,6 +38,7 @@ public abstract class GamePlay extends JPanel{
 	private static final int PACMAN_SIZE = 20;
 
 	private final JFrame parent;
+	private JPanel thisGamePlayPanel;
 	private JPanel gamePanel;
 	private JPanel scorePanel;
 	private JPanel infoPanel;
@@ -64,6 +67,7 @@ public abstract class GamePlay extends JPanel{
 	public GamePlay(JFrame parent) 
 	{
 		this.parent = parent;
+		thisGamePlayPanel = this;
 		this.map = new Map();
 		
 		
@@ -218,6 +222,7 @@ public abstract class GamePlay extends JPanel{
         inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0, false), "down arrow pressed");
         inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, 0, false), "left arrow pressed");
         inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, 0, false), "right arrow pressed");
+        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_SPACE, 0, false), "space bar pressed");
 
 
         getActionMap().put("up arrow pressed",
@@ -228,6 +233,8 @@ public abstract class GamePlay extends JPanel{
                 new Pressed("left"));
         getActionMap().put("right arrow pressed",
                 new Pressed("right"));
+        getActionMap().put("space bar pressed",
+                new Pressed("space"));
 
     }
 
@@ -260,6 +267,11 @@ public abstract class GamePlay extends JPanel{
             if (this.key.equals("right"))
             {
             	nextDirection = RIGHT;
+            }
+
+            if (this.key.equals("space"))
+            {
+            	showPauseOptionPane(); //TODO: add other functionality for the pause button
             }
 
         }
@@ -369,7 +381,63 @@ public abstract class GamePlay extends JPanel{
         });
 	    
     }
+    
+    /**
+     * Shows the JOptionPane that pops up after a player hits pause, gives the options to exit or continue playing
+     */
+    private void showPauseOptionPane() {
+        JPanel readyPanel = new JPanel(new BorderLayout());
+        ImageIcon backgroundImage = new ImageIcon("pauseScreen.png");
+        JLabel backgroundLabel = new JLabel(backgroundImage);
+        ImageIcon scaledBackgroundImage = new ImageIcon(backgroundImage.getImage().getScaledInstance(500, 680, Image.SCALE_SMOOTH));
+        backgroundLabel.setIcon(scaledBackgroundImage);
+        backgroundLabel.setBorder(null);
+        backgroundLabel.setLayout(null);
+        backgroundLabel.setPreferredSize(new Dimension(499, 679));
+        JButton continueButton = createTransparentButton();
+        continueButton.setBounds(150, 190, 212, 135); 
+        continueButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Window parentWindow = SwingUtilities.getWindowAncestor(continueButton);
+                parentWindow.dispose();
+                //TODO: implement resume game
+            }
+        });
+        JButton exitButton = createTransparentButton();
+        exitButton.setBounds(150, 350, 212, 135);
+        exitButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            	  Window parentWindow = SwingUtilities.getWindowAncestor(exitButton);
+                  parentWindow.dispose();
+                  parent.getContentPane().remove(thisGamePlayPanel);
+                  SwingUtilities.invokeLater(() -> parent.getContentPane().add(new HomeScreen(parent)));
+                  parent.getContentPane().revalidate();
+                  parent.getContentPane().repaint();
+            }
+        });
+        
+        backgroundLabel.add(continueButton);
+        backgroundLabel.add(exitButton);
+        readyPanel.add(backgroundLabel, BorderLayout.CENTER);
+        readyPanel.setOpaque(true);
+        JOptionPane.showOptionDialog(null, readyPanel, "Game Paused", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, new Object[]{}, null);
+    }
 	
+    
+    /**
+	 * @return transparent button
+	 */
+    public JButton createTransparentButton() {
+        JButton button = new JButton();
+        button.setContentAreaFilled(false); 
+        button.setFocusPainted(false); 
+        button.setBorderPainted(false); 
+        button.setOpaque(false);
+        return button;
+    }
+    
 	public abstract BufferedImage getBackgroundImage();
 
 }

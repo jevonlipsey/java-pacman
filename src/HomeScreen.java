@@ -75,7 +75,7 @@ public class HomeScreen extends JPanel {
 	/**
 	 * @return transparent button
 	 */
-    private JButton createTransparentButton() {
+    public JButton createTransparentButton() {
         JButton button = new JButton();
         button.setContentAreaFilled(false); 
         button.setFocusPainted(false); 
