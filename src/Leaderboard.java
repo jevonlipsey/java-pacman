@@ -11,8 +11,9 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
-
-
+/**
+ * Creates the JPanel that displays the leaderboard based on the scores saved in the database
+ */
 public class Leaderboard extends JPanel{
 	private static final Font font = new Font("Dialog", Font.BOLD, 24);
 	private final JFrame parent;
@@ -47,7 +48,7 @@ public class Leaderboard extends JPanel{
             @Override
             public void actionPerformed(ActionEvent e) {
                 parent.getContentPane().remove(thisJPanel);
-                SwingUtilities.invokeLater(() -> parent.getContentPane().add(new LayoutOne(parent)));
+                SwingUtilities.invokeLater(() -> parent.getContentPane().add(new GamePlay(parent)));
                 parent.getContentPane().revalidate();
                 parent.getContentPane().repaint();
             }

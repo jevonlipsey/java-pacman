@@ -13,8 +13,9 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
-
-
+/**
+ * The GameOver panel that pops up when you finish a game
+ */
 public class GameOver extends JPanel{
 	private static final Font font = new Font("Dialog", Font.BOLD, 24);
 	private final JFrame parent;
@@ -71,6 +72,10 @@ public class GameOver extends JPanel{
         
 	}
 	
+	/**
+	 * @param score
+	 * @return the label that displays the final score
+	 */
 	private JLabel createScoreLabel(int score) {
 		String scoreString = Integer.toString(score);
 		JLabel scoreLabel = new JLabel(scoreString);
@@ -81,6 +86,9 @@ public class GameOver extends JPanel{
 		return scoreLabel;
 	}
 	
+	/**
+	 * @return the text field for the user to enter their initials
+	 */
 	private JTextField createTextField() {
 		JTextField name = new JTextField();
         name.setOpaque(false);
@@ -91,6 +99,9 @@ public class GameOver extends JPanel{
         return name;
 	}
 	
+	/**
+	 * @return a label that pops up when the user has an invalid entry
+	 */
 	private JLabel createBadLabel() {
 		JLabel badLabel = new JLabel("Invalid: enter 3 letter initial");
 		badLabel.setForeground(Color.RED);

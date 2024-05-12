@@ -1,6 +1,8 @@
 import java.awt.*;
 import java.awt.geom.Ellipse2D;
-
+/**
+ * This class holds the information for each cell in the map
+ */
 public class Cell
 {
     private static final int CELL = 24;
@@ -165,6 +167,10 @@ public class Cell
         g2.setClip(oldClip);
     }
     
+    /**
+     * Checks if a cell is a wall
+     * @return true if it is, false if it isn't
+     */
     public boolean isWall() 
     {
         // all cell types that represent walls

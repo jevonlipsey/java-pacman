@@ -19,7 +19,7 @@ import javax.imageio.ImageIO;
 /**
  * Abstract class that holds the game logic
  */
-public abstract class GamePlay extends JPanel{
+public class GamePlay extends JPanel{
 	
 	
 	private static final int UP = 1;
@@ -69,7 +69,11 @@ public abstract class GamePlay extends JPanel{
     
     private Map map;
 	
-	
+	/**
+	 * Constructor for the GamePlay class
+	 * Loads all of the images, sets the layout, and starts the timer for the game.
+	 * @param parent - the main JFrame for the pacman game
+	 */
 	public GamePlay(JFrame parent) 
 	{
 		this.parent = parent;
@@ -230,7 +234,9 @@ public abstract class GamePlay extends JPanel{
 	}
 
 	
-	
+	/**
+	 * Sets up all of the keyBindings 
+	 */
 	private void setKeyBindings()
 	{
         InputMap inputMap = this.getInputMap(JPanel.WHEN_IN_FOCUSED_WINDOW);
@@ -255,6 +261,9 @@ public abstract class GamePlay extends JPanel{
 
     }
 
+	/**
+	 * Class for the KeyBindings that determines what each key press does.
+	 */
     public class Pressed extends AbstractAction
     {
         String key;
@@ -308,7 +317,7 @@ public abstract class GamePlay extends JPanel{
             if (this.key.equals("space"))
             {
             	timer.stop();
-            	showPauseOptionPane(); //TODO: add other functionality for the pause button
+            	showPauseOptionPane();
             }
 
         }
@@ -447,6 +456,6 @@ public abstract class GamePlay extends JPanel{
         return button;
     }
     
-	public abstract BufferedImage getBackgroundImage();
+
 
 }

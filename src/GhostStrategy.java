@@ -1,4 +1,6 @@
-
+/**
+ * Interface for the ghost strategies, decides how each ghost will move based on their strategy
+ */
 public interface GhostStrategy {
 
 	public static enum Mode {CHASE, SCATTER, FRIGHTENED};

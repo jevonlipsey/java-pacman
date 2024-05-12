@@ -3,7 +3,9 @@ import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
-
+/**
+ * Holds all of the info for a ghost
+ */
 public class Ghost {
 	
 	private String image;
@@ -23,11 +25,7 @@ public class Ghost {
 			e.printStackTrace();
 		}
 	}
-	
-	private void drawGhost() {
-	
-	}
-	
+
 	public void setStrategy(GhostStrategy strategy) {
 		this.strategy = strategy;
 	}

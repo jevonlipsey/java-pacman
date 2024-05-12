@@ -136,6 +136,12 @@ public final class Map extends JPanel
         return cells;
     }
 
+    /**
+     * Checks if a certain cell is a wall or not
+     * @param column
+     * @param row
+     * @return true if it is, false if not
+     */
     public boolean isWall(int column, int row) 
     {
         if (row < 0 || row >= tileHeight || column < 0 || column >= tileWidth)

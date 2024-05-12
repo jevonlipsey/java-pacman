@@ -21,14 +21,20 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
-
+/**
+ * Creates the JPanel HomeScreen for the game
+ */
 public class HomeScreen extends JPanel {
 	private static final Font font = new Font("Dialog", Font.BOLD, 24);
 	private final JFrame parent;
 	private final JPanel thisJPanel;
 	private ImageIcon background;
 	
-	
+	/**
+	 * Constructor for the class
+	 * Adds the background, buttons, and their actionlisteners
+	 * @param parent - JFrame containing the pacman game
+	 */
 	public HomeScreen(JFrame parent) {
 		this.parent = parent;
 		thisJPanel = this;
@@ -45,7 +51,7 @@ public class HomeScreen extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 parent.getContentPane().remove(thisJPanel);
-                SwingUtilities.invokeLater(() -> parent.getContentPane().add(new LayoutOne(parent)));
+                SwingUtilities.invokeLater(() -> parent.getContentPane().add(new GamePlay(parent)));
                 parent.getContentPane().revalidate();
                 parent.getContentPane().repaint();
             }
