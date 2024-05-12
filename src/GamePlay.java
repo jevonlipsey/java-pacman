@@ -51,6 +51,12 @@ public abstract class GamePlay extends JPanel{
 	private BufferedImage pacmanClosedImage;
 	private BufferedImage pacmanImage;
 	
+	private BufferedImage pinkyImage;
+	private BufferedImage clydeImage;
+	private BufferedImage inkyImage;
+	private BufferedImage blinkyImage;
+	
+	
 	private int pacmanDirection = UP;
 	private int nextDirection = UP;
 	private int pacmanColumnn = 5;
@@ -80,6 +86,11 @@ public abstract class GamePlay extends JPanel{
 			pacmanLeftImage = ImageIO.read(new File("pacmanLeftOpen.png")); 
 			pacmanRightImage = ImageIO.read(new File("pacmanRightOpen.png")); 
 			pacmanClosedImage = ImageIO.read(new File("pacmanClosed.png")); 
+			
+			pinkyImage = ImageIO.read(new File("pinky.png")); 
+			clydeImage = ImageIO.read(new File("clyde.png")); 
+			inkyImage = ImageIO.read(new File("inky.png")); 
+			blinkyImage = ImageIO.read(new File("blinky.png")); 
 			
 			BufferedImage blackImage = ImageIO.read(new File("black.png"));
 			blackImg = new ImageIcon(blackImage.getScaledInstance(50, 800, Image.SCALE_SMOOTH));
@@ -204,6 +215,12 @@ public abstract class GamePlay extends JPanel{
 	            // Draw Pacman
 	            g.drawImage(pacmanImage, pacmanColumnn * Map.CELL, pacmanRow * Map.CELL, 
 	            			PACMAN_SIZE, PACMAN_SIZE, this);
+	            
+	            g.drawImage(blinkyImage, 9 * Map.CELL, 14*Map.CELL, PACMAN_SIZE, PACMAN_SIZE, this);
+	            g.drawImage(pinkyImage, 10 * Map.CELL, 14*Map.CELL, PACMAN_SIZE, PACMAN_SIZE, this);
+	            g.drawImage(inkyImage, 9 * Map.CELL, 13*Map.CELL, PACMAN_SIZE, PACMAN_SIZE, this);
+	            g.drawImage(clydeImage, 10 * Map.CELL, 13*Map.CELL, PACMAN_SIZE, PACMAN_SIZE, this);
+	            
 	        }
 	        
 	    };
@@ -281,8 +298,8 @@ public abstract class GamePlay extends JPanel{
     public void updateSprites() 
     {
        
-            int nextColumn = pacmanColumnn;
-            int nextRow = pacmanRow;
+    	int nextColumn = pacmanColumnn;
+        int nextRow = pacmanRow;
 
             if (pacmanDirection == UP && !map.isWall(pacmanColumnn, pacmanRow - 1))
             {
@@ -310,8 +327,7 @@ public abstract class GamePlay extends JPanel{
             {
                 pacmanColumnn = nextColumn;
                 pacmanRow = nextRow;
-            }
-            
+            }            
             
        
             // Check if next direction is valid
@@ -424,6 +440,13 @@ public abstract class GamePlay extends JPanel{
         JOptionPane.showOptionDialog(null, readyPanel, "Game Paused", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, new Object[]{}, null);
     }
 	
+    public int getPacmanRow() {
+    	return pacmanRow;
+    }
+    
+    public int pacmanRow() {
+    	return pacmanRow;
+    }
     
     /**
 	 * @return transparent button
