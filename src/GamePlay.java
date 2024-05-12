@@ -59,7 +59,7 @@ public class GamePlay extends JPanel{
 	
 	private int pacmanDirection = UP;
 	private int nextDirection = UP;
-	private int pacmanColumnn = 5;
+	private int pacmanColumn = 5;
 	private int pacmanRow = 24;
 	private boolean pacMouthOpen = true;
 	
@@ -217,7 +217,7 @@ public class GamePlay extends JPanel{
 	            map.paintComponent(g);
 	            
 	            // Draw Pacman
-	            g.drawImage(pacmanImage, pacmanColumnn * Map.CELL, pacmanRow * Map.CELL, 
+	            g.drawImage(pacmanImage, pacmanColumn * Map.CELL, pacmanRow * Map.CELL, 
 	            			PACMAN_SIZE, PACMAN_SIZE, this);
 	            
 	            g.drawImage(blinkyImage, 9 * Map.CELL, 14*Map.CELL, PACMAN_SIZE, PACMAN_SIZE, this);
@@ -277,7 +277,7 @@ public class GamePlay extends JPanel{
         {
             if (this.key.equals("up"))
             {
-            	   if (!map.isWall(pacmanColumnn, pacmanRow - 1)) 
+            	   if (!map.isWall(pacmanColumn, pacmanRow - 1)) 
                    {
                        pacmanDirection = UP;
                        nextDirection = UP;
@@ -287,7 +287,7 @@ public class GamePlay extends JPanel{
 
             if (this.key.equals("down"))
             {
-            	if (!map.isWall(pacmanColumnn, pacmanRow + 1)) 
+            	if (!map.isWall(pacmanColumn, pacmanRow + 1)) 
                 {
                     pacmanDirection = DOWN;
                     nextDirection = DOWN;
@@ -296,7 +296,7 @@ public class GamePlay extends JPanel{
             }
             if (this.key.equals("left"))
             {
-            	if (!map.isWall(pacmanColumnn - 1, pacmanRow)) 
+            	if (!map.isWall(pacmanColumn - 1, pacmanRow)) 
                 {
                     pacmanDirection = LEFT;
                     nextDirection = LEFT;
@@ -306,7 +306,7 @@ public class GamePlay extends JPanel{
             
             if (this.key.equals("right"))
             {
-            	if (!map.isWall(pacmanColumnn + 1, pacmanRow)) 
+            	if (!map.isWall(pacmanColumn + 1, pacmanRow)) 
                 {
                     pacmanDirection = RIGHT;
                     nextDirection = RIGHT;
@@ -327,41 +327,10 @@ public class GamePlay extends JPanel{
      * Updates the movement of the pacman and the ghosts on the screen
      */
     public void updateSprites() {
-    	//Check for opening for the next direction clicked
-    	if (nextDirection == UP && !map.isWall(pacmanColumnn, pacmanRow - 1)) pacmanDirection = nextDirection;
-    	else if (nextDirection == DOWN && !map.isWall(pacmanColumnn, pacmanRow + 1)) pacmanDirection = nextDirection;
-    	else if (nextDirection == LEFT && !map.isWall(pacmanColumnn - 1, pacmanRow)) pacmanDirection = nextDirection;
-    	else if (nextDirection == RIGHT && !map.isWall(pacmanColumnn + 1, pacmanRow)) pacmanDirection = nextDirection;
-
-    	if (pacmanDirection == UP && !map.isWall(pacmanColumnn, pacmanRow - 1))
-        {
-        	pacmanRow -= 1;
-            pacmanImage = pacmanUpImage;
-            
-        } 
-        else if (pacmanDirection == DOWN && !map.isWall(pacmanColumnn, pacmanRow + 1))
-        {
-            pacmanRow += 1;
-            pacmanImage = pacmanDownImage;
-        }
-        else if (pacmanDirection == LEFT && !map.isWall(pacmanColumnn - 1, pacmanRow)) 
-        {
-            pacmanColumnn -=1;
-            pacmanImage = pacmanLeftImage;
-        } 
-        else if (pacmanDirection == RIGHT && !map.isWall(pacmanColumnn + 1, pacmanRow)) 
-        {
-            pacmanColumnn += 1;
-            pacmanImage = pacmanRightImage;
-        }
-
-        // Check for edge of screen to cross over
-        if (pacmanColumnn < 0) pacmanColumnn = tileWidth - 1;
-        if (pacmanColumnn >= tileWidth) pacmanColumnn = 0;
-        if (pacmanRow < 0) pacmanRow = tileHeight - 1;
-        if (pacmanRow >= tileHeight) pacmanRow = 0;
-
-     
+    	
+    	updatePacman();
+        
+        updateMap();
 
         SwingUtilities.invokeLater(() -> {
             repaint();
@@ -381,15 +350,62 @@ public class GamePlay extends JPanel{
 	    }
 	    
 	    pacMouthOpen = !pacMouthOpen;
-	    
-	    
-	    SwingUtilities.invokeLater(() -> {
-            repaint();
-            gamePanel.repaint();
-            parent.getContentPane().repaint();
-            parent.getContentPane().revalidate();
-        });
-	    
+	   
+    }
+    
+    public void updatePacman()
+    {
+    	//Check for opening for the next direction clicked
+    	if (nextDirection == UP && !map.isWall(pacmanColumn, pacmanRow - 1)) pacmanDirection = nextDirection;
+    	else if (nextDirection == DOWN && !map.isWall(pacmanColumn, pacmanRow + 1)) pacmanDirection = nextDirection;
+    	else if (nextDirection == LEFT && !map.isWall(pacmanColumn - 1, pacmanRow)) pacmanDirection = nextDirection;
+    	else if (nextDirection == RIGHT && !map.isWall(pacmanColumn + 1, pacmanRow)) pacmanDirection = nextDirection;
+
+    	if (pacmanDirection == UP && !map.isWall(pacmanColumn, pacmanRow - 1))
+        {
+        	pacmanRow -= 1;
+            pacmanImage = pacmanUpImage;
+            
+        } 
+        else if (pacmanDirection == DOWN && !map.isWall(pacmanColumn, pacmanRow + 1))
+        {
+            pacmanRow += 1;
+            pacmanImage = pacmanDownImage;
+        }
+        else if (pacmanDirection == LEFT && !map.isWall(pacmanColumn - 1, pacmanRow)) 
+        {
+            pacmanColumn -=1;
+            pacmanImage = pacmanLeftImage;
+        } 
+        else if (pacmanDirection == RIGHT && !map.isWall(pacmanColumn + 1, pacmanRow)) 
+        {
+            pacmanColumn += 1;
+            pacmanImage = pacmanRightImage;
+        }
+
+        // Check for edge of screen to cross over
+        if (pacmanColumn < 0) pacmanColumn = tileWidth - 1;
+        if (pacmanColumn >= tileWidth) pacmanColumn = 0;
+        if (pacmanRow < 0) pacmanRow = tileHeight - 1;
+        if (pacmanRow >= tileHeight) pacmanRow = 0;
+        
+        
+        updateMouth();
+
+    }
+    
+    public void updateMap()
+    {
+    	// update map food
+        if (map.getCells()[pacmanRow][pacmanColumn].getType() == 'p') {
+            // Pacman is on a pill, so change the cell to an empty cell
+            map.getCells()[pacmanRow][pacmanColumn].setType('o');
+        }
+        // update map power pellets
+        if (map.getCells()[pacmanRow][pacmanColumn].getType() == 'P') {
+            // Pacman is on a pill, so change the cell to an empty cell
+            map.getCells()[pacmanRow][pacmanColumn].setType('o');
+        }
     }
     
     /**
