@@ -486,6 +486,7 @@ public class GamePlay extends JPanel{
         updateMouth();
 
     }
+    
     /**
      * Allows pacman to eat pellets and beat levels
      */
@@ -523,6 +524,9 @@ public class GamePlay extends JPanel{
         // 'new' level once all pellets are eaten
         if (allPelletsGone()) {
             setupLevel();
+            if (volumeOn) {
+            	(new CutsceneMusicPlayer()).start();
+            }
             
         }
         
@@ -539,11 +543,17 @@ public class GamePlay extends JPanel{
                 	SwingUtilities.invokeLater(() -> parent.getContentPane().add(new GameOver(parent, volumeOn, score)));;
                     parent.getContentPane().revalidate();
                     parent.getContentPane().repaint();
+                    if (volumeOn) {
+                    	(new DeathMusicPlayer()).start();
+                    }
                 	
                 	
                 } else {
                 	resetPositions();
                 	pacmanDirection = INVALID;
+                	if (volumeOn) {
+                    	(new DeathMusicPlayer()).start();
+                    }
                 }
             }
           
