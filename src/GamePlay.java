@@ -46,6 +46,7 @@ public class GamePlay extends JPanel{
 	private JPanel scorePanel;
 	private JPanel infoPanel;
 	private JLabel currentScore;
+	private JLabel[] livesArray;
 	
 	private BufferedImage pacmanUpImage;
 	private BufferedImage pacmanDownImage;
@@ -272,11 +273,11 @@ public class GamePlay extends JPanel{
 		JLabel life2 = new JLabel(new ImageIcon(new ImageIcon(pacmanRightImage).getImage().getScaledInstance(PACMAN_SIZE, PACMAN_SIZE, Image.SCALE_SMOOTH)));
 		JLabel life3 = new JLabel(new ImageIcon(new ImageIcon(pacmanRightImage).getImage().getScaledInstance(PACMAN_SIZE, PACMAN_SIZE, Image.SCALE_SMOOTH)));
 	
-		life3.setBounds(110,95,PACMAN_SIZE,PACMAN_SIZE);
-		life2.setBounds(50,95,PACMAN_SIZE,PACMAN_SIZE);
-		life1.setBounds(80,95,PACMAN_SIZE,PACMAN_SIZE);
+		life3.setBounds(110,65,PACMAN_SIZE,PACMAN_SIZE);
+		life2.setBounds(90,65,PACMAN_SIZE,PACMAN_SIZE);
+		life1.setBounds(70,65,PACMAN_SIZE,PACMAN_SIZE);
 		
-		JLabel[] livesArray = {life1, life2, life3};
+		livesArray = new JLabel[]{life1, life2, life3};
 		
 		infoPanel.setBackground(Color.black);
 		infoPanel.setSize(600, 140);
@@ -286,15 +287,7 @@ public class GamePlay extends JPanel{
 			infoPanel.add(livesArray[i]);
 			livesArray[i].setVisible(true);
 		}
-		
-		for (int i = 0; i > lives - 3; i--)
-		{
-			
-			livesArray[i].setBounds(0,0,PACMAN_SIZE,PACMAN_SIZE);
-		}
-		
-		System.out.print(lives);
-		
+	
 		
 		return infoPanel;
 	}
@@ -432,6 +425,8 @@ public class GamePlay extends JPanel{
     	updatePacman();
         
         updateMap();
+        
+        updateLivesDisplay();
 
         SwingUtilities.invokeLater(() -> {
             repaint();
@@ -499,6 +494,7 @@ public class GamePlay extends JPanel{
         updateMouth();
 
     }
+    
     /**
      * Allows pacman to eat pellets and beat levels
      */
@@ -513,15 +509,14 @@ public class GamePlay extends JPanel{
             
             long currentTime = System.currentTimeMillis();
            
-            if (lastEventTime - currentTime < -380) {
+            if ((lastEventTime - currentTime < -380) && volumeOn) {
                 (new ChompMusicPlayer()).start();
                 lastEventTime = System.currentTimeMillis();
 
 
             }
-            //}
+                        
             
-//            
         }
         // update map power pellets
         if (map.getCells()[pacmanRow][pacmanColumn].getType() == 'P') {
@@ -529,12 +524,17 @@ public class GamePlay extends JPanel{
             map.getCells()[pacmanRow][pacmanColumn].setType('o');
             score += 50;
             currentScore.setText(score + "");
-            (new ExtraMusicPlayer()).start();
+            if (volumeOn) {
+            	(new ExtraMusicPlayer()).start();
+            }
         }
         
         // 'new' level once all pellets are eaten
         if (allPelletsGone()) {
             setupLevel();
+            if (volumeOn) {
+            	(new CutsceneMusicPlayer()).start();
+            }
             
         }
         
@@ -546,19 +546,35 @@ public class GamePlay extends JPanel{
                 // Pacman is in the same cell as a ghost, so he loses a life
                 lives--;
                 if (lives <= 0) {
-                    // TODO: Game over screen
+      
                 	parent.getContentPane().remove(thisJPanel);
                 	SwingUtilities.invokeLater(() -> parent.getContentPane().add(new GameOver(parent, volumeOn, score)));;
                     parent.getContentPane().revalidate();
                     parent.getContentPane().repaint();
+                    if (volumeOn) {
+                    	(new DeathMusicPlayer()).start();
+                    }
                 	
                 	
                 } else {
                 	resetPositions();
                 	pacmanDirection = INVALID;
+                	if (volumeOn) {
+                    	(new DeathMusicPlayer()).start();
+                    }
                 }
             }
           
+    }
+    
+    public void updateLivesDisplay() {
+        for (int i = 0; i < livesArray.length; i++) {
+            if (i < lives) {
+                livesArray[i].setVisible(true);
+            } else {
+                livesArray[i].setVisible(false);
+            }
+        }
     }
     /**
      * Checks all cells of the map for pellets and power pellets

@@ -31,6 +31,7 @@ public class HomeScreen extends JPanel {
 	private ImageIcon background;
 	private ImageIcon volumeImg;
 	public boolean volumeOn = true;
+	private IntroMusicPlayer introMusic; 
 	
 	/**
 	 * Constructor for the class
@@ -40,6 +41,7 @@ public class HomeScreen extends JPanel {
 	public HomeScreen(JFrame parent) {
 		this.parent = parent;
 		thisJPanel = this;
+		introMusic = new IntroMusicPlayer();
 		
 		BackgroundPanel backgroundPanel = new BackgroundPanel();
         
@@ -90,11 +92,16 @@ public class HomeScreen extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
             	volumeOn = !volumeOn;
-            	if (volumeOn) volume.setIcon(volumeOnImg);
-            	else volume.setIcon(volumeOffImg);
+            	if (volumeOn) {
+            		volume.setIcon(volumeOnImg);
+            		introMusic.startAgain();
+            	}
+            	else {
+            		volume.setIcon(volumeOffImg);
+            		introMusic.stopPlaying();
+            	}
             	parent.getContentPane().revalidate();
                 parent.getContentPane().repaint();
-                //TODO: turn volume off - Talon?
             }
         });
 
@@ -104,7 +111,10 @@ public class HomeScreen extends JPanel {
         backgroundPanel.setFocusable(true);
         add(backgroundPanel);
         setVisible(true);
-        (new IntroMusicPlayer()).start();
+        if (volumeOn) {
+            introMusic.start();
+
+        }
     }
 
 	/**
