@@ -1,6 +1,8 @@
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.FontFormatException;
 import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.Image;
@@ -9,7 +11,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
-import java.io.File;
+import java.io.*;
 import java.io.IOException;
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -34,6 +36,8 @@ public class GamePlay extends JPanel{
 	 
 	public static final int GAME_PANEL_WIDTH = 550;
 	public static final int GAME_PANEL_HEIGHT = 630;
+	
+	private static final int FONT_SIZE = 20;
 		
 	private static final int PACMAN_SIZE = 20;
 
@@ -56,6 +60,7 @@ public class GamePlay extends JPanel{
 	private BufferedImage inkyImage;
 	private BufferedImage blinkyImage;
 	
+	private int score;
 	
 	private int pacmanDirection = UP;
 	private int nextDirection = UP;
@@ -162,8 +167,10 @@ public class GamePlay extends JPanel{
 		currentScoreLabel.setLayout(new GridLayout(2, 1));
 		currentScoreLabel.setBackground(Color.black);
 		JLabel currentScoreText = new JLabel("Current Score");
+		currentScoreText.setFont(getArcadeFont());
 		currentScoreText.setForeground(Color.yellow);
-		currentScore = new JLabel("0"); //TODO: track score, maybe move this where it can be updated?
+		currentScore = new JLabel("0");
+		currentScore.setFont(getArcadeFont());
 		currentScore.setForeground(Color.yellow);
 		currentScoreLabel.add(currentScoreText);
 		currentScoreLabel.add(currentScore);
@@ -174,8 +181,10 @@ public class GamePlay extends JPanel{
 		highScoreLabel.setLayout(new GridLayout(2, 1));
 		highScoreLabel.setBackground(Color.black);
 		JLabel highScoreText = new JLabel("High Score");
-		JLabel highScore = new JLabel("120000"); //TODO: make getHighScore() method in HighScoreDatabase class
+		highScoreText.setFont(getArcadeFont());
 		highScoreText.setForeground(Color.yellow);
+		JLabel highScore = new JLabel("120000"); //TODO: make getHighScore() method in HighScoreDatabase class
+		highScore.setFont(getArcadeFont());
 		highScore.setForeground(Color.yellow);
 		highScoreLabel.add(highScoreText);
 		highScoreLabel.add(highScore);
@@ -402,11 +411,15 @@ public class GamePlay extends JPanel{
         if (map.getCells()[pacmanRow][pacmanColumn].getType() == 'p') {
             // Pacman is on a pill, so change the cell to an empty cell
             map.getCells()[pacmanRow][pacmanColumn].setType('o');
+            score += 10;
+            currentScore.setText(score + "");
         }
         // update map power pellets
         if (map.getCells()[pacmanRow][pacmanColumn].getType() == 'P') {
-            // Pacman is on a pill, so change the cell to an empty cell
+            // Pacman is on an energizer, so change the cell to an empty cell
             map.getCells()[pacmanRow][pacmanColumn].setType('o');
+            score += 50;
+            currentScore.setText(score + "");
         }
     }
     
@@ -463,6 +476,23 @@ public class GamePlay extends JPanel{
     }
     
     /**
+     * imports a custom arcade-style font 
+     * @return the imported font
+     */
+    public static Font getArcadeFont() {
+    	// Get custom font
+        Font arcadeFont = null;
+        try {
+            InputStream is = new FileInputStream(new File("ARCADECLASSIC.TTF"));
+            arcadeFont = Font.createFont(Font.TRUETYPE_FONT, is).deriveFont(Font.PLAIN, FONT_SIZE);
+        } catch (IOException | FontFormatException e) {
+            e.printStackTrace();
+        }
+        assert arcadeFont != null;
+        return arcadeFont;
+    }
+    
+    /**
 	 * @return transparent button
 	 */
     public JButton createTransparentButton() {
@@ -473,7 +503,5 @@ public class GamePlay extends JPanel{
         button.setOpaque(false);
         return button;
     }
-    
-
 
 }
