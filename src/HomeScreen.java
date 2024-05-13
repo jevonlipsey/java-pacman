@@ -30,7 +30,7 @@ public class HomeScreen extends JPanel {
 	private final JPanel thisJPanel;
 	private ImageIcon background;
 	private ImageIcon volumeImg;
-	private boolean volumeOn = true;
+	public boolean volumeOn = true;
 	
 	/**
 	 * Constructor for the class
@@ -53,7 +53,7 @@ public class HomeScreen extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 parent.getContentPane().remove(thisJPanel);
-                SwingUtilities.invokeLater(() -> parent.getContentPane().add(new GamePlay(parent)));
+                SwingUtilities.invokeLater(() -> parent.getContentPane().add(new GamePlay(parent, volumeOn)));
                 parent.getContentPane().revalidate();
                 parent.getContentPane().repaint();
             }
@@ -63,7 +63,7 @@ public class HomeScreen extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 parent.getContentPane().remove(thisJPanel);
-                SwingUtilities.invokeLater(() -> parent.getContentPane().add(new Leaderboard(parent)));
+                SwingUtilities.invokeLater(() -> parent.getContentPane().add(new Leaderboard(parent, volumeOn)));
                 parent.getContentPane().revalidate();
                 parent.getContentPane().repaint();
             }
