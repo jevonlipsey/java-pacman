@@ -62,11 +62,11 @@ public class GamePlay extends JPanel{
 	
 	private int score;
 	
-	private int pacmanDirection = UP;
-	private int nextDirection = UP;
-	private int pacmanColumn = 5;
-	private int pacmanRow = 24;
-	private boolean pacMouthOpen = true;
+	private int pacmanDirection;
+	private int nextDirection;
+	private int pacmanColumn;
+	private int pacmanRow;
+	private boolean pacMouthOpen;
 	
     private final Timer timer;
     private final Timer mouthTimer;
@@ -83,7 +83,6 @@ public class GamePlay extends JPanel{
 	{
 		this.parent = parent;
 		thisGamePlayPanel = this;
-		this.map = new Map();
 		setSize(600, 800);
 		setLayout(null);
 		
@@ -149,6 +148,18 @@ public class GamePlay extends JPanel{
         mouthTimer.start();
                
         startTime = System.currentTimeMillis();
+        
+        setupLevel();
+	}
+	
+	public void setupLevel() 
+	{
+		this.map = new Map();
+		pacmanColumn = 5;
+		pacmanRow = 24;
+		pacMouthOpen = true;
+		
+		
 	}
 	
 	 /**
@@ -421,7 +432,30 @@ public class GamePlay extends JPanel{
             score += 50;
             currentScore.setText(score + "");
         }
+        
+        if (allPelletsGone()) {
+            setupLevel();
+            
+        }
     }
+    
+    public boolean allPelletsGone() {
+        for (int row = 0; row < map.getCells().length; row++)
+        {
+            for (int column = 0; column < map.getCells()[row].length; column++) 
+            {
+                if (map.getCells()[row][column].getType() == 'p' 
+                	|| map.getCells()[row][column].getType() == 'P' )
+                {
+                    
+                    return false;
+                }
+            }
+        }
+        // return true if no pellets found
+        return true;
+    }
+
     
     /**
      * Shows the JOptionPane that pops up after a player hits pause, gives the options to exit or continue playing

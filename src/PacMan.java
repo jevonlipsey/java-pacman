@@ -19,7 +19,7 @@ public class PacMan {
     public static void main(String args[]) {
 
         // Create JFrame for the game
-        JFrame frame = new JFrame("Game");
+        JFrame frame = new JFrame("Pacman");
         
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
