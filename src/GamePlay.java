@@ -67,6 +67,17 @@ public class GamePlay extends JPanel{
 	private int pacmanColumn;
 	private int pacmanRow;
 	private boolean pacMouthOpen;
+	private int lives = 3;
+	
+	private int blinkyRow;
+	private int blinkyColumn;
+	private int pinkyRow;
+	private int pinkyColumn;
+	private int inkyRow;
+	private int inkyColumn;
+	private int clydeRow;
+	private int clydeColumn;
+
 	
     private final Timer timer;
     private final Timer mouthTimer;
@@ -157,12 +168,25 @@ public class GamePlay extends JPanel{
 	 */
 	public void setupLevel() 
 	{
+		
 		this.map = new Map();
+		resetPositions();
+	}
+	
+	public void resetPositions()
+	{
 		pacmanColumn = 5;
 		pacmanRow = 24;
 		pacMouthOpen = true;
-		
-		
+	
+		blinkyColumn = 10;
+		blinkyRow = 11;
+		pinkyColumn = 10;
+		pinkyRow =13 ;
+		inkyColumn = 9;
+		inkyRow =13 ;
+		clydeColumn = 11 ;
+		clydeRow = 13;
 	}
 	
 	 /**
@@ -245,10 +269,10 @@ public class GamePlay extends JPanel{
 	            g.drawImage(pacmanImage, pacmanColumn * Map.CELL, pacmanRow * Map.CELL, 
 	            			PACMAN_SIZE, PACMAN_SIZE, this);
 	            
-	            g.drawImage(blinkyImage, 9 * Map.CELL, 14*Map.CELL, PACMAN_SIZE, PACMAN_SIZE, this);
-	            g.drawImage(pinkyImage, 10 * Map.CELL, 14*Map.CELL, PACMAN_SIZE, PACMAN_SIZE, this);
-	            g.drawImage(inkyImage, 9 * Map.CELL, 13*Map.CELL, PACMAN_SIZE, PACMAN_SIZE, this);
-	            g.drawImage(clydeImage, 10 * Map.CELL, 13*Map.CELL, PACMAN_SIZE, PACMAN_SIZE, this);
+	            g.drawImage(blinkyImage, blinkyColumn * Map.CELL, blinkyRow*Map.CELL, PACMAN_SIZE, PACMAN_SIZE, this);
+	            g.drawImage(pinkyImage, pinkyColumn * Map.CELL, pinkyRow*Map.CELL, PACMAN_SIZE, PACMAN_SIZE, this);
+	            g.drawImage(inkyImage, inkyColumn * Map.CELL, inkyRow*Map.CELL, PACMAN_SIZE, PACMAN_SIZE, this);
+	            g.drawImage(clydeImage, clydeColumn * Map.CELL, clydeRow*Map.CELL, PACMAN_SIZE, PACMAN_SIZE, this);
 	            
 	        }
 	        
@@ -448,6 +472,22 @@ public class GamePlay extends JPanel{
             setupLevel();
             
         }
+        
+        
+        if ((pacmanColumn == blinkyColumn && pacmanRow == blinkyRow) ||
+                (pacmanColumn == pinkyColumn && pacmanRow == pinkyRow) ||
+                (pacmanColumn == inkyColumn && pacmanRow == inkyRow) ||
+                (pacmanColumn == clydeColumn && pacmanRow == clydeRow)) {
+                // Pacman is in the same cell as a ghost, so he loses a life
+                lives--;
+                if (lives == 0) {
+                    // TODO: Game over
+                } else {
+                	resetPositions();
+                	pacmanDirection = INVALID;
+                }
+            }
+          
     }
     /**
      * Checks all cells of the map for pellets and power pellets
