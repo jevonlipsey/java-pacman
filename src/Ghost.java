@@ -14,6 +14,17 @@ public class Ghost {
 	private GhostState state;
 	private BufferedImage ghostImage;
 	
+	private int column;
+	private int row;
+	
+	private int cornerColumn;
+	private int cornerRow;
+	
+	
+	/**
+	 * Constructor for the class. Sets the name and image.
+	 * @param name
+	 */
 	public Ghost(String name) {
 		this.name = name;
 		this.image = name + ".png";
@@ -25,6 +36,11 @@ public class Ghost {
 			e.printStackTrace();
 		}
 	}
+	
+	public int getNextMove() {
+		return strategy.getMove(state);
+	}
+	
 
 	public void setStrategy(GhostStrategy strategy) {
 		this.strategy = strategy;
@@ -41,4 +57,21 @@ public class Ghost {
 	public String getName() {
 		return name;
 	}
+	
+	public int getCornerColumn() {
+		return cornerColumn;
+	}
+	
+	public int getCornerRow() {
+		return cornerRow;
+	}
+	
+	public int getColumn() {
+		return column;
+	}
+
+	public int getRow() {
+		return row;
+	}
+
 }

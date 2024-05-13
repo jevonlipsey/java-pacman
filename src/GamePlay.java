@@ -23,7 +23,6 @@ import javax.imageio.ImageIO;
  */
 public class GamePlay extends JPanel{
 	
-	
 	private static final int UP = 1;
 	private static final int DOWN = 2;
 	private static final int LEFT = 3;
@@ -60,6 +59,11 @@ public class GamePlay extends JPanel{
 	private BufferedImage clydeImage;
 	private BufferedImage inkyImage;
 	private BufferedImage blinkyImage;
+	
+	private Ghost blinky;
+	private Ghost pinky;
+	private Ghost inky;
+	private Ghost clyde;
 	
 	private ImageIcon volumeImg;
 	
@@ -109,6 +113,10 @@ public class GamePlay extends JPanel{
 		setLayout(null);
 		this.thisJPanel = this;
 		
+		blinky = new Ghost("blinky");
+		pinky = new Ghost("pinky");
+		inky = new Ghost("inky");
+		clyde = new Ghost("clyde");
 		
 		ImageIcon blackImg = null;
 		
@@ -538,7 +546,7 @@ public class GamePlay extends JPanel{
                 // Pacman is in the same cell as a ghost, so he loses a life
                 lives--;
                 if (lives <= 0) {
-                    // TODO: Game over screen
+      
                 	parent.getContentPane().remove(thisJPanel);
                 	SwingUtilities.invokeLater(() -> parent.getContentPane().add(new GameOver(parent, volumeOn, score)));;
                     parent.getContentPane().revalidate();

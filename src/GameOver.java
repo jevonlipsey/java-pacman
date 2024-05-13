@@ -43,6 +43,9 @@ public class GameOver extends JPanel{
         JButton enterButton = createTransparentButton();
         enterButton.setBounds(295, 490, 140, 75);
         
+        JButton exitButton = createTransparentButton();
+        exitButton.setBounds(175, 590, 300, 170);
+        
         enterButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -58,6 +61,16 @@ public class GameOver extends JPanel{
                 parent.getContentPane().repaint();
             }
         });
+        
+        exitButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                parent.getContentPane().remove(thisJPanel);
+                SwingUtilities.invokeLater(() -> parent.getContentPane().add(new HomeScreen(parent)));
+                parent.getContentPane().revalidate();
+                parent.getContentPane().repaint();
+            }
+        });
 
         
         backgroundPanel.add(enterButton);
@@ -65,6 +78,7 @@ public class GameOver extends JPanel{
         backgroundPanel.add(name);
         backgroundPanel.add(badLabel);
 
+        backgroundPanel.add(exitButton);
         backgroundPanel.setPreferredSize(new Dimension(600, 800));
         backgroundPanel.setFocusable(true);
         add(backgroundPanel);
@@ -107,7 +121,7 @@ public class GameOver extends JPanel{
 		badLabel.setForeground(Color.RED);
 		badLabel.setFont(new Font("Serif", Font.BOLD, 20));
 		badLabel.setOpaque(false);
-		badLabel.setBounds(270, 600, 280, 50);
+		badLabel.setBounds(270, 400, 280, 50);
 		badLabel.setVisible(false);
 		
 		return badLabel;
