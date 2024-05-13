@@ -24,6 +24,7 @@ public abstract class MusicPlayer extends Thread{
 	public boolean isPlaying;
 	private Clip clip;
 	
+	public abstract void run();
 	
 	public void playMusic(String path) {
 		
