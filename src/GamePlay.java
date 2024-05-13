@@ -114,9 +114,17 @@ public class GamePlay extends JPanel{
 		this.thisJPanel = this;
 		
 		blinky = new Ghost("blinky");
+		blinky.setColumn(blinkyColumn);
+		blinky.setRow(blinkyRow);
 		pinky = new Ghost("pinky");
+		pinky.setColumn(pinkyColumn);
+		pinky.setRow(pinkyRow);
 		inky = new Ghost("inky");
+		inky.setColumn(inkyColumn);
+		inky.setRow(inkyRow);
 		clyde = new Ghost("clyde");
+		clyde.setColumn(clydeColumn);
+		clyde.setRow(clydeRow);
 		
 		ImageIcon blackImg = null;
 		

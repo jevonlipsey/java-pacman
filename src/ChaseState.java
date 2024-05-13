@@ -28,8 +28,7 @@ public class ChaseState implements GhostState {
 
 	@Override
 	public int getMove() {
-		// TODO Auto-generated method stub
-		return 0;
+		return ghost.getStrategy().getMove();
 	}
 
 }

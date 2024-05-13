@@ -37,10 +37,6 @@ public class Ghost {
 		}
 	}
 	
-	public int getNextMove() {
-		return strategy.getMove(state);
-	}
-	
 
 	public void setStrategy(GhostStrategy strategy) {
 		this.strategy = strategy;
@@ -66,12 +62,24 @@ public class Ghost {
 		return cornerRow;
 	}
 	
+	public void setColumn(int column) {
+		this.column = column;
+	}
+
+	public void setRow(int row) {
+		this.row = row;
+	}
+	
 	public int getColumn() {
 		return column;
 	}
 
 	public int getRow() {
 		return row;
+	}
+	
+	public GhostStrategy getStrategy() {
+		return strategy;
 	}
 
 }

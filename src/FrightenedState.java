@@ -8,11 +8,11 @@ public class FrightenedState implements GhostState {
 	private int row;
 	private Map map;
 	
-	public FrightenedState(Ghost ghost, int column, int row, Map map) {
+	public FrightenedState(Ghost ghost, Map map) {
 		this.ghost = ghost;
-		this.column = column;
-		this.row = row;
 		this.map = map;
+		column = ghost.getColumn();
+		row = ghost.getRow();
 	}
 	
 	/**

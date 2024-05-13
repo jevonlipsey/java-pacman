@@ -12,7 +12,10 @@ public interface GhostStrategy {
 	
 	public static enum Mode {CHASE, SCATTER, FRIGHTENED};
 	
-	public int getMove(GhostState state);
+	/**
+	 * @return the next move based on the chase strategy
+	 */
+	public int getMove();
 	
 	
 }
