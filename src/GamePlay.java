@@ -534,7 +534,7 @@ public class GamePlay extends JPanel{
                 // Pacman is in the same cell as a ghost, so he loses a life
                 lives--;
                 if (lives <= 0) {
-                    // TODO: Game over screen
+      
                 	parent.getContentPane().remove(thisJPanel);
                 	SwingUtilities.invokeLater(() -> parent.getContentPane().add(new GameOver(parent, volumeOn, score)));;
                     parent.getContentPane().revalidate();
