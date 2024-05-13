@@ -221,7 +221,10 @@ public class GamePlay extends JPanel{
 		JLabel highScoreText = new JLabel("High Score");
 		highScoreText.setFont(getArcadeFont());
 		highScoreText.setForeground(Color.yellow);
-		JLabel highScore = new JLabel("120000"); //TODO: make getHighScore() method in HighScoreDatabase class
+		HighScoreDatabase scores = new HighScoreDatabase();
+		String topScore;
+		topScore = scores.getTopScoreNumber();
+		JLabel highScore = new JLabel(topScore); 
 		highScore.setFont(getArcadeFont());
 		highScore.setForeground(Color.yellow);
 		highScoreLabel.add(highScoreText);

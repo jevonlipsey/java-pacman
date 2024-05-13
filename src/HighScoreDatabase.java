@@ -68,6 +68,23 @@ public class HighScoreDatabase {
     }
     
     /**
+     * A method to retrieve the top N (number) of scores from the data base
+     * @param n
+     * @return ArrayList of top scores.
+     */
+    public String getTopScoreNumber(){
+    	try {
+    		ResultSet rset = stmt.executeQuery("select * from highScores ORDER BY score DESC;");
+    		return rset.getString("score");
+	} catch (SQLException e) {
+		e.printStackTrace();
+	} catch (NullPointerException e) {
+		return "0";
+	}
+		return "0";
+    }
+    
+    /**
      * Clearing the leaderboard entirely.
      */
     public void clearHighScores() {
