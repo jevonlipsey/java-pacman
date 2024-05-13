@@ -76,6 +76,7 @@ public class HomeScreen extends JPanel {
         backgroundPanel.setFocusable(true);
         add(backgroundPanel);
         setVisible(true);
+        (new IntroMusicPlayer()).start();
     }
 
 	/**
