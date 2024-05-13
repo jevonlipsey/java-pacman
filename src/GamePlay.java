@@ -178,6 +178,8 @@ public class GamePlay extends JPanel{
 		pacmanColumn = 5;
 		pacmanRow = 24;
 		pacMouthOpen = true;
+		pacmanDirection = INVALID;
+		nextDirection = INVALID;
 	
 		blinkyColumn = 10;
 		blinkyRow = 11;
@@ -476,7 +478,7 @@ public class GamePlay extends JPanel{
             
         }
         
-        
+        // update pacman lives
         if ((pacmanColumn == blinkyColumn && pacmanRow == blinkyRow) ||
                 (pacmanColumn == pinkyColumn && pacmanRow == pinkyRow) ||
                 (pacmanColumn == inkyColumn && pacmanRow == inkyRow) ||
@@ -484,7 +486,8 @@ public class GamePlay extends JPanel{
                 // Pacman is in the same cell as a ghost, so he loses a life
                 lives--;
                 if (lives == 0) {
-                    // TODO: Game over
+                    // TODO: Game over screen
+                	
                 } else {
                 	resetPositions();
                 	pacmanDirection = INVALID;
