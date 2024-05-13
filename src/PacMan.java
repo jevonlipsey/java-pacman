@@ -6,7 +6,10 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 /**
- * Creates the main JFrame for the game
+ * Creates the main JFrame for the game, which involves controlling a character named Pac-Man 
+ * within a maze-like environment, eating dots while avoiding ghosts to achieve high scores and 
+ * progress through levels. This class contains the main method that initializes and launches the 
+ * Pac-Man game window.
  */
 public class PacMan {
 	
