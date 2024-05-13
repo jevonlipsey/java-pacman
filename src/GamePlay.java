@@ -87,6 +87,8 @@ public class GamePlay extends JPanel{
     
     private Map map;
     
+
+    private JPanel thisJPanel;
 	
 	/**
 	 * Constructor for the GamePlay class
@@ -100,6 +102,7 @@ public class GamePlay extends JPanel{
 		thisGamePlayPanel = this;
 		setSize(600, 800);
 		setLayout(null);
+		this.thisJPanel = this;
 		
 		
 		ImageIcon blackImg = null;
@@ -248,10 +251,38 @@ public class GamePlay extends JPanel{
      */
 	public JPanel getInfoPanel() 
 	{
-		JPanel infoPanel = new JPanel();
 		
-		infoPanel.setBackground(Color.BLACK);
+		JPanel infoPanel = new JPanel();
+		infoPanel.setLayout(null);
+		
+		
+		JLabel life1 = new JLabel(new ImageIcon(new ImageIcon(pacmanRightImage).getImage().getScaledInstance(PACMAN_SIZE, PACMAN_SIZE, Image.SCALE_SMOOTH)));
+		JLabel life2 = new JLabel(new ImageIcon(new ImageIcon(pacmanRightImage).getImage().getScaledInstance(PACMAN_SIZE, PACMAN_SIZE, Image.SCALE_SMOOTH)));
+		JLabel life3 = new JLabel(new ImageIcon(new ImageIcon(pacmanRightImage).getImage().getScaledInstance(PACMAN_SIZE, PACMAN_SIZE, Image.SCALE_SMOOTH)));
+	
+		life3.setBounds(110,95,PACMAN_SIZE,PACMAN_SIZE);
+		life2.setBounds(50,95,PACMAN_SIZE,PACMAN_SIZE);
+		life1.setBounds(80,95,PACMAN_SIZE,PACMAN_SIZE);
+		
+		JLabel[] livesArray = {life1, life2, life3};
+		
+		infoPanel.setBackground(Color.black);
 		infoPanel.setSize(600, 140);
+		
+		for (int i = 0; i < lives; i++)
+		{
+			infoPanel.add(livesArray[i]);
+			livesArray[i].setVisible(true);
+		}
+		
+		for (int i = 0; i > lives - 3; i--)
+		{
+			
+			livesArray[i].setBounds(0,0,PACMAN_SIZE,PACMAN_SIZE);
+		}
+		
+		System.out.print(lives);
+		
 		
 		return infoPanel;
 	}
@@ -502,8 +533,13 @@ public class GamePlay extends JPanel{
                 (pacmanColumn == clydeColumn && pacmanRow == clydeRow)) {
                 // Pacman is in the same cell as a ghost, so he loses a life
                 lives--;
-                if (lives == 0) {
+                if (lives <= 0) {
                     // TODO: Game over screen
+                	parent.getContentPane().remove(thisJPanel);
+                	SwingUtilities.invokeLater(() -> parent.getContentPane().add(new GameOver(parent, score)));;
+                    parent.getContentPane().revalidate();
+                    parent.getContentPane().repaint();
+                	
                 	
                 } else {
                 	resetPositions();

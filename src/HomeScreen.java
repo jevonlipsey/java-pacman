@@ -29,6 +29,8 @@ public class HomeScreen extends JPanel {
 	private final JFrame parent;
 	private final JPanel thisJPanel;
 	private ImageIcon background;
+	private ImageIcon volumeImg;
+	private boolean volumeOn = true;
 	
 	/**
 	 * Constructor for the class
@@ -67,11 +69,37 @@ public class HomeScreen extends JPanel {
             }
         });
 
-   
-
         backgroundPanel.add(playButton);
         backgroundPanel.add(scoresButton);
+        
+        
+        //Add volume images and button
+        ImageIcon volumeOnImg = new ImageIcon(new ImageIcon("volumeOn.png").getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH));
+        ImageIcon volumeOffImg = new ImageIcon(new ImageIcon("volumeOff.png").getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH));
+        if (volumeOn) volumeImg = volumeOnImg;
+        else volumeImg = volumeOffImg;
+        
+        JLabel volume = new JLabel(volumeImg);
+        volume.setBounds(250, 620, 100, 100);
+        backgroundPanel.add(volume);
+        
+        JButton volumeButton = createTransparentButton();
+        volumeButton.setBounds(250, 620, 100, 100);
+        
+        volumeButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            	volumeOn = !volumeOn;
+            	if (volumeOn) volume.setIcon(volumeOnImg);
+            	else volume.setIcon(volumeOffImg);
+            	parent.getContentPane().revalidate();
+                parent.getContentPane().repaint();
+                //TODO: turn volume off - Talon?
+            }
+        });
 
+        backgroundPanel.add(volumeButton);
+        
         backgroundPanel.setPreferredSize(new Dimension(600, 800));
         backgroundPanel.setFocusable(true);
         add(backgroundPanel);
