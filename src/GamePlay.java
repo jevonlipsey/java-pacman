@@ -505,15 +505,14 @@ public class GamePlay extends JPanel{
             
             long currentTime = System.currentTimeMillis();
            
-            if (lastEventTime - currentTime < -380) {
+            if ((lastEventTime - currentTime < -380) && volumeOn) {
                 (new ChompMusicPlayer()).start();
                 lastEventTime = System.currentTimeMillis();
 
 
             }
-            //}
+                        
             
-//            
         }
         // update map power pellets
         if (map.getCells()[pacmanRow][pacmanColumn].getType() == 'P') {
@@ -521,7 +520,9 @@ public class GamePlay extends JPanel{
             map.getCells()[pacmanRow][pacmanColumn].setType('o');
             score += 50;
             currentScore.setText(score + "");
-            (new ExtraMusicPlayer()).start();
+            if (volumeOn) {
+            	(new ExtraMusicPlayer()).start();
+            }
         }
         
         // 'new' level once all pellets are eaten
