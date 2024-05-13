@@ -84,6 +84,8 @@ public class GamePlay extends JPanel{
     private final long startTime;
     
     private Map map;
+    
+    private JPanel thisJPanel;
 	
 	/**
 	 * Constructor for the GamePlay class
@@ -96,6 +98,7 @@ public class GamePlay extends JPanel{
 		thisGamePlayPanel = this;
 		setSize(600, 800);
 		setLayout(null);
+		this.thisJPanel = this;
 		
 		
 		ImageIcon blackImg = null;
@@ -485,8 +488,13 @@ public class GamePlay extends JPanel{
                 (pacmanColumn == clydeColumn && pacmanRow == clydeRow)) {
                 // Pacman is in the same cell as a ghost, so he loses a life
                 lives--;
-                if (lives == 0) {
+                if (lives <= 0) {
                     // TODO: Game over screen
+                	parent.getContentPane().remove(thisJPanel);
+                	SwingUtilities.invokeLater(() -> parent.getContentPane().add(new GameOver(parent, score)));;
+                    parent.getContentPane().revalidate();
+                    parent.getContentPane().repaint();
+                	
                 	
                 } else {
                 	resetPositions();
