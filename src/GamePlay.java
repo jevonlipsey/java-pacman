@@ -152,6 +152,9 @@ public class GamePlay extends JPanel{
         setupLevel();
 	}
 	
+	/**
+	 * Initializes the level of the game.
+	 */
 	public void setupLevel() 
 	{
 		this.map = new Map();
@@ -363,6 +366,9 @@ public class GamePlay extends JPanel{
         
     }
     
+    /**
+     * Open and closes pacman's mouth
+     */
     public void updateMouth()
     {
 	    // open and closes mouth
@@ -374,7 +380,9 @@ public class GamePlay extends JPanel{
 	    pacMouthOpen = !pacMouthOpen;
 	   
     }
-    
+    /**
+     * Updates pacmans movement and mouth animation
+     */
     public void updatePacman()
     {
     	//Check for opening for the next direction clicked
@@ -415,7 +423,9 @@ public class GamePlay extends JPanel{
         updateMouth();
 
     }
-    
+    /**
+     * Allows pacman to eat pellets and beat levels
+     */
     public void updateMap()
     {
     	// update map food
@@ -433,12 +443,16 @@ public class GamePlay extends JPanel{
             currentScore.setText(score + "");
         }
         
+        // 'new' level once all pellets are eaten
         if (allPelletsGone()) {
             setupLevel();
             
         }
     }
-    
+    /**
+     * Checks all cells of the map for pellets and power pellets
+     * @return
+     */
     public boolean allPelletsGone() {
         for (int row = 0; row < map.getCells().length; row++)
         {
@@ -500,11 +514,17 @@ public class GamePlay extends JPanel{
         readyPanel.setOpaque(true);
         JOptionPane.showOptionDialog(null, readyPanel, "Game Paused", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, new Object[]{}, null);
     }
-	
-    public int getPacmanRow() {
-    	return pacmanRow;
+	/**
+	 * Gets pacmans current X position
+	 * @return x position
+	 */
+    public int getPacmanColumn() {
+    	return pacmanColumn;
     }
-    
+    /**
+     * Gets pacmans current Y position
+     * @return y position
+     */
     public int pacmanRow() {
     	return pacmanRow;
     }

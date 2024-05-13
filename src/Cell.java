@@ -30,6 +30,10 @@ public class Cell
         return type;
     }
     
+    /**
+     * Sets the type of cell
+     * @param type of cell wanted
+     */
     public void setType(char type) {
         this.type = type;
     }
