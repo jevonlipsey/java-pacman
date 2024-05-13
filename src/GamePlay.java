@@ -539,11 +539,17 @@ public class GamePlay extends JPanel{
                 	SwingUtilities.invokeLater(() -> parent.getContentPane().add(new GameOver(parent, volumeOn, score)));;
                     parent.getContentPane().revalidate();
                     parent.getContentPane().repaint();
+                    if (volumeOn) {
+                    	(new DeathMusicPlayer()).start();
+                    }
                 	
                 	
                 } else {
                 	resetPositions();
                 	pacmanDirection = INVALID;
+                	if (volumeOn) {
+                    	(new DeathMusicPlayer()).start();
+                    }
                 }
             }
           
