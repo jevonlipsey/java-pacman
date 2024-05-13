@@ -60,6 +60,8 @@ public class GamePlay extends JPanel{
 	private BufferedImage inkyImage;
 	private BufferedImage blinkyImage;
 	
+	private ImageIcon volumeImg;
+	
 	private int score;
 	
 	private int pacmanDirection;
@@ -78,6 +80,7 @@ public class GamePlay extends JPanel{
 	private int clydeRow;
 	private int clydeColumn;
 
+	private boolean volumeOn;
 	
     private final Timer timer;
     private final Timer mouthTimer;
@@ -95,10 +98,11 @@ public class GamePlay extends JPanel{
 	 * Loads all of the images, sets the layout, and starts the timer for the game.
 	 * @param parent - the main JFrame for the pacman game
 	 */
-	public GamePlay(JFrame parent) 
+	public GamePlay(JFrame parent, boolean volumeOn) 
 	{
 		lastEventTime = System.currentTimeMillis();
 		this.parent = parent;
+		this.volumeOn = volumeOn;
 		thisGamePlayPanel = this;
 		setSize(600, 800);
 		setLayout(null);
@@ -536,7 +540,7 @@ public class GamePlay extends JPanel{
                 if (lives <= 0) {
                     // TODO: Game over screen
                 	parent.getContentPane().remove(thisJPanel);
-                	SwingUtilities.invokeLater(() -> parent.getContentPane().add(new GameOver(parent, score)));;
+                	SwingUtilities.invokeLater(() -> parent.getContentPane().add(new GameOver(parent, volumeOn, score)));;
                     parent.getContentPane().revalidate();
                     parent.getContentPane().repaint();
                 	
@@ -573,7 +577,7 @@ public class GamePlay extends JPanel{
     /**
      * Shows the JOptionPane that pops up after a player hits pause, gives the options to exit or continue playing
      */
-    private void showPauseOptionPane() {
+    private void showPauseOptionPane() { 
         JPanel readyPanel = new JPanel(new BorderLayout());
         ImageIcon backgroundImage = new ImageIcon("pauseScreen.png");
         JLabel backgroundLabel = new JLabel(backgroundImage);
@@ -606,6 +610,33 @@ public class GamePlay extends JPanel{
                   parent.getContentPane().repaint();
             }
         });
+        
+      //Add volume images and button
+        ImageIcon volumeOnImg = new ImageIcon(new ImageIcon("volumeOn.png").getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH));
+        ImageIcon volumeOffImg = new ImageIcon(new ImageIcon("volumeOff.png").getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH));
+        if (volumeOn) volumeImg = volumeOnImg;
+        else volumeImg = volumeOffImg;
+        
+        JLabel volume = new JLabel(volumeImg);
+        volume.setBounds(200, 540, 100, 100);
+        backgroundLabel.add(volume);
+        
+        JButton volumeButton = createTransparentButton();
+        volumeButton.setBounds(200, 540, 100, 100);
+        
+        volumeButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            	volumeOn = !volumeOn;
+            	if (volumeOn) volume.setIcon(volumeOnImg);
+            	else volume.setIcon(volumeOffImg);
+            	parent.getContentPane().revalidate();
+                parent.getContentPane().repaint();
+                //TODO: turn volume off - Talon?
+            }
+        });
+
+        backgroundLabel.add(volumeButton);
         
         backgroundLabel.add(continueButton);
         backgroundLabel.add(exitButton);

@@ -26,7 +26,7 @@ public class Leaderboard extends JPanel{
 	 * A Constructor to set up the main JPanel
 	 * @param parent
 	 */
-	public Leaderboard(JFrame parent) {
+	public Leaderboard(JFrame parent, boolean volumeOn) {
 		database = new HighScoreDatabase();
 		this.parent = parent;
 		thisJPanel = this;
@@ -48,7 +48,7 @@ public class Leaderboard extends JPanel{
             @Override
             public void actionPerformed(ActionEvent e) {
                 parent.getContentPane().remove(thisJPanel);
-                SwingUtilities.invokeLater(() -> parent.getContentPane().add(new GamePlay(parent)));
+                SwingUtilities.invokeLater(() -> parent.getContentPane().add(new GamePlay(parent, volumeOn)));
                 parent.getContentPane().revalidate();
                 parent.getContentPane().repaint();
             }

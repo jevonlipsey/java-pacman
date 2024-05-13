@@ -28,7 +28,7 @@ public class GameOver extends JPanel{
 	 * A Constructor to set up the main JPanel
 	 * @param parent
 	 */
-	public GameOver(JFrame parent, int score) {
+	public GameOver(JFrame parent, boolean volumeOn, int score) {
 		database = new HighScoreDatabase();
 		this.parent = parent;
 		thisJPanel = this;
@@ -53,7 +53,7 @@ public class GameOver extends JPanel{
             	String nameString = name.getText();
             	database.addNewScore(score, nameString);
                 parent.getContentPane().remove(thisJPanel);
-                SwingUtilities.invokeLater(() -> parent.getContentPane().add(new Leaderboard(parent)));
+                SwingUtilities.invokeLater(() -> parent.getContentPane().add(new Leaderboard(parent, volumeOn)));
                 parent.getContentPane().revalidate();
                 parent.getContentPane().repaint();
             }
