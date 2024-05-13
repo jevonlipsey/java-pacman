@@ -4,6 +4,8 @@ The user will also have to ensure they are connected to the database, otherwise,
 tracking will not run. The build path should also contain the mySQL driver to connect to the database
 and a standard OpenJDK library (built on OpenJDK 20.0.2).
 
+To run the tests, add JUnit 5 to the build path.
+
 HOW TO PLAY:
 Use the left-click on your mouse/trackpad to control the menus of the game.
 Use the arrow keys (↑ ↓ → ←) to control Pacman's movement and send him in the direction of the arrow.
