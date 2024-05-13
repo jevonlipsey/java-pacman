@@ -6,7 +6,7 @@ and a standard OpenJDK library (built on OpenJDK 20.0.2).
 
 HOW TO PLAY:
 Use the left-click on your mouse/trackpad to control the menus of the game.
-Use the arrow keys (↑ ↓ → ←) to control Pacman's movement.
+Use the arrow keys (↑ ↓ → ←) to control Pacman's movement and send him in the direction of the arrow.
 Use the space bar to pause the game.
 
 Goal:
