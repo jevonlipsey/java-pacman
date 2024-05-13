@@ -83,7 +83,10 @@ public class GamePlay extends JPanel{
     private final Timer mouthTimer;
     private final long startTime;
     
+    private long lastEventTime;
+    
     private Map map;
+    
 	
 	/**
 	 * Constructor for the GamePlay class
@@ -92,6 +95,7 @@ public class GamePlay extends JPanel{
 	 */
 	public GamePlay(JFrame parent) 
 	{
+		lastEventTime = System.currentTimeMillis();
 		this.parent = parent;
 		thisGamePlayPanel = this;
 		setSize(600, 800);
@@ -463,6 +467,18 @@ public class GamePlay extends JPanel{
             map.getCells()[pacmanRow][pacmanColumn].setType('o');
             score += 10;
             currentScore.setText(score + "");
+            
+            long currentTime = System.currentTimeMillis();
+           
+            if (lastEventTime - currentTime < -380) {
+                (new ChompMusicPlayer()).start();
+                lastEventTime = System.currentTimeMillis();
+
+
+            }
+            //}
+            
+//            
         }
         // update map power pellets
         if (map.getCells()[pacmanRow][pacmanColumn].getType() == 'P') {
@@ -470,6 +486,7 @@ public class GamePlay extends JPanel{
             map.getCells()[pacmanRow][pacmanColumn].setType('o');
             score += 50;
             currentScore.setText(score + "");
+            (new ExtraMusicPlayer()).start();
         }
         
         // 'new' level once all pellets are eaten

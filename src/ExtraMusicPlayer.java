@@ -1,7 +1,7 @@
 
 public class ExtraMusicPlayer extends MusicPlayer{
 	public void run() {
-		playExtra();
+		playMusic("SoundEffects/Extra.wav");
 	}
 
 }

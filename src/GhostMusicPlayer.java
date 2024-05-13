@@ -1,7 +1,7 @@
 
 public class GhostMusicPlayer extends MusicPlayer{
 	public void run() {
-		playGhost();
+		playMusic("SoundEffects/Ghost.wav");
 	}
 
 }

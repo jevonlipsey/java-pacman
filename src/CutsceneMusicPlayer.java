@@ -1,7 +1,7 @@
 
 public class CutsceneMusicPlayer extends MusicPlayer{
 	public void run() {
-		playCutscene();
+		playMusic("SoundEffects/Cutscene.wav");
 	}
 
 }
