@@ -68,6 +68,15 @@ public abstract class MusicPlayer extends Thread{
 				e.printStackTrace();
 			}
 		}
+	
+	
+	public void stopPlaying() {
+		clip.stop();
+	}
+	
+	public void startAgain() {
+		clip.start();
+	}
 
 
 		
