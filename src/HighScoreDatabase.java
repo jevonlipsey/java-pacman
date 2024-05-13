@@ -75,7 +75,11 @@ public class HighScoreDatabase {
     public String getTopScoreNumber(){
     	try {
     		ResultSet rset = stmt.executeQuery("select * from highScores ORDER BY score DESC;");
-    		return rset.getString("score");
+    		
+    		if(rset.next()){
+    			   return rset.getString("score");
+    			}
+
 	} catch (SQLException e) {
 		e.printStackTrace();
 	} catch (NullPointerException e) {
