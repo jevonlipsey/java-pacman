@@ -27,7 +27,7 @@ public class FrightenedState implements GhostState {
 	 * Returns a random move based on available options
 	 */
 	@Override
-	public int getMove() {
+	public int getMove(int pacmanCol, int pacmanRow) {
 		ArrayList<Integer> possibleMoves = new ArrayList<Integer>();
 		
 		if (!map.isWall(column, row - 1)) possibleMoves.add(UP);

@@ -12,16 +12,12 @@ public class PinkyStrategy implements GhostStrategy {
 	private int column;
 	private int row;
 	private Map map;
-	private int pacmanCol;
-	private int pacmanRow;
 	
-	public PinkyStrategy(Ghost ghost, int pacCol, int pacRow, Map map) {
+	public PinkyStrategy(Ghost ghost, Map map) {
 		this.ghost = ghost;
 		this.column = ghost.getColumn();
 		this.row = ghost.getRow();
 		this.map = map;
-		pacmanCol = pacCol;
-		pacmanRow = pacRow;
 		
 	}
 	
@@ -30,7 +26,7 @@ public class PinkyStrategy implements GhostStrategy {
 	 * gets the next move chasing the pacman's location
 	 */
 	@Override
-	public int  getMove() {
+	public int getMove(int pacmanCol, int pacmanRow) {
 		ArrayList<int[]> possibleTargets = new ArrayList<int[]>();
 		
 		if (!map.isWall(pacmanCol + CHECK_DISTANCE, pacmanRow + CHECK_DISTANCE)) {

@@ -8,6 +8,11 @@ import javax.imageio.ImageIO;
  */
 public class Ghost {
 	
+	private static final int UP = 1;
+	private static final int DOWN = 2;
+	private static final int LEFT = 3;
+	private static final int RIGHT = 4;
+	
 	private String image;
 	private String name;
 	private GhostStrategy strategy;
@@ -37,6 +42,9 @@ public class Ghost {
 		}
 	}
 	
+	public int getMove(int pacmanCol, int pacmanRow) {
+		return state.getMove(pacmanCol, pacmanRow);
+	}
 
 	public void setStrategy(GhostStrategy strategy) {
 		this.strategy = strategy;
@@ -44,6 +52,10 @@ public class Ghost {
 	
 	public void setState(GhostState state) {
 		this.state = state;
+	}
+	
+	public GhostState getState() {
+		return state;
 	}
 	
 	public String getImage() {
@@ -70,12 +82,32 @@ public class Ghost {
 		this.row = row;
 	}
 	
+	public void decrementRow() {
+		this.row--;
+	}
+	
+	public void incrementRow() {
+		this.row++;
+	}
+	
+	public void decrementColumn() {
+		this.column--;
+	}
+	
+	public void incrementColumn() {
+		this.column++;
+	}
+	
 	public int getColumn() {
 		return column;
 	}
 
 	public int getRow() {
 		return row;
+	}
+	
+	public void setImage(String imageName) {
+		image = imageName;
 	}
 	
 	public GhostStrategy getStrategy() {

@@ -10,5 +10,5 @@ public interface GhostState {
 	
 	public String getImageName(String ghostName);
 	
-	public int getMove();
+	public int getMove(int pacmanCol, int pacmanRow);
 }

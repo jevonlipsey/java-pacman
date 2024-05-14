@@ -4,16 +4,12 @@ public class ChaseState implements GhostState {
 	private Ghost ghost;
 	private int column;
 	private int row;
-	private int pacmanCol;
-	private int pacmanRow;
 	private Map map;
 	
 	public ChaseState(Ghost ghost, Map map) {
 		this.ghost = ghost;
 		this.column = ghost.getColumn();
 		this.row = ghost.getRow();
-		this.pacmanCol = ghost.getCornerColumn();
-		this.pacmanRow = ghost.getCornerRow();
 		this.map = map;
 	}
 	
@@ -27,8 +23,8 @@ public class ChaseState implements GhostState {
 	}
 
 	@Override
-	public int getMove() {
-		return ghost.getStrategy().getMove();
+	public int getMove(int pacmanCol, int pacmanRow) {
+		return ghost.getStrategy().getMove(pacmanCol, pacmanRow);
 	}
 
 }

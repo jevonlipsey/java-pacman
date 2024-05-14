@@ -20,7 +20,7 @@ public class ClydeStrategy implements GhostStrategy {
 	
 	
 	@Override
-	public int getMove() {
+	public int getMove(int pacmanCol, int pacmanRow) {
 		ArrayList<Integer> possibleMoves = new ArrayList<Integer>();
 		
 		if (!map.isWall(column, row - 1)) possibleMoves.add(UP);

@@ -15,7 +15,7 @@ public interface GhostStrategy {
 	/**
 	 * @return the next move based on the chase strategy
 	 */
-	public int getMove();
+	public int getMove(int pacmanCol, int pacmanRow);
 	
 	
 }
