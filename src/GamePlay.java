@@ -89,6 +89,7 @@ public class GamePlay extends JPanel{
 	
     private final Timer timer;
     private final Timer mouthTimer;
+    private final Timer ghostStateTimer;
     private final long startTime;
     
     private long lastEventTime;
@@ -105,6 +106,7 @@ public class GamePlay extends JPanel{
 	 */
 	public GamePlay(JFrame parent, boolean volumeOn) 
 	{
+		
 		lastEventTime = System.currentTimeMillis();
 		this.parent = parent;
 		this.volumeOn = volumeOn;
@@ -113,10 +115,25 @@ public class GamePlay extends JPanel{
 		setLayout(null);
 		this.thisJPanel = this;
 		
+		this.map = new Map();
+		
+		
 		blinky = new Ghost("blinky");
+		blinky.setStrategy(new BlinkyStrategy(blinky, map));
+		blinky.setColumn(blinkyColumn);
+		blinky.setRow(blinkyRow);
 		pinky = new Ghost("pinky");
+		pinky.setStrategy(new PinkyStrategy(pinky, map));
+		pinky.setColumn(pinkyColumn);
+		pinky.setRow(pinkyRow);
 		inky = new Ghost("inky");
+		inky.setStrategy(new InkyStrategy(inky, map));
+		inky.setColumn(inkyColumn);
+		inky.setRow(inkyRow);
 		clyde = new Ghost("clyde");
+		clyde.setStrategy(new ClydeStrategy(clyde, map));
+		clyde.setColumn(clydeColumn);
+		clyde.setRow(clydeRow);
 		
 		ImageIcon blackImg = null;
 		
@@ -128,10 +145,10 @@ public class GamePlay extends JPanel{
 			pacmanRightImage = ImageIO.read(new File("pacmanRightOpen.png")); 
 			pacmanClosedImage = ImageIO.read(new File("pacmanClosed.png")); 
 			
-			pinkyImage = ImageIO.read(new File("pinky.png")); 
-			clydeImage = ImageIO.read(new File("clyde.png")); 
-			inkyImage = ImageIO.read(new File("inky.png")); 
-			blinkyImage = ImageIO.read(new File("blinky.png")); 
+			pinkyImage = ImageIO.read(new File(pinky.getImage())); 
+			clydeImage = ImageIO.read(new File(clyde.getImage())); 
+			inkyImage = ImageIO.read(new File(inky.getImage())); 
+			blinkyImage = ImageIO.read(new File(blinky.getImage())); 
 			
 			BufferedImage blackImage = ImageIO.read(new File("black.png"));
 			blackImg = new ImageIcon(blackImage.getScaledInstance(50, 800, Image.SCALE_SMOOTH));
@@ -177,21 +194,20 @@ public class GamePlay extends JPanel{
         
         mouthTimer = new Timer(30, actionEvent -> updateMouth());
         mouthTimer.start();
+        
+        blinky.setState(new ChaseState(blinky, map));
+		pinky.setState(new ChaseState(pinky, map));
+		inky.setState(new ChaseState(inky, map));
+		clyde.setState(new ChaseState(clyde, map));
+        ghostStateTimer = new Timer(15000, actionEvent -> updateMouth());
+        ghostStateTimer.start();
                
         startTime = System.currentTimeMillis();
         
-        setupLevel();
+        resetPositions();
+       
 	}
 	
-	/**
-	 * Initializes the level of the game.
-	 */
-	public void setupLevel() 
-	{
-		
-		this.map = new Map();
-		resetPositions();
-	}
 	
 	public void resetPositions()
 	{
@@ -201,14 +217,14 @@ public class GamePlay extends JPanel{
 		pacmanDirection = INVALID;
 		nextDirection = INVALID;
 	
-		blinkyColumn = 10;
-		blinkyRow = 11;
-		pinkyColumn = 10;
-		pinkyRow =13 ;
-		inkyColumn = 9;
-		inkyRow =13 ;
-		clydeColumn = 11 ;
-		clydeRow = 13;
+		blinky.setColumn(10);
+		blinky.setRow(11);;
+		pinky.setColumn(10);
+		pinky.setRow(13);
+		inky.setColumn(9);
+		inky.setRow(13);
+		clyde.setColumn(11);
+		clyde.setRow(13);
 	}
 	
 	 /**
@@ -314,11 +330,10 @@ public class GamePlay extends JPanel{
 	            g.drawImage(pacmanImage, pacmanColumn * Map.CELL, pacmanRow * Map.CELL, 
 	            			PACMAN_SIZE, PACMAN_SIZE, this);
 	            
-	            g.drawImage(blinkyImage, blinkyColumn * Map.CELL, blinkyRow*Map.CELL, PACMAN_SIZE, PACMAN_SIZE, this);
-	            g.drawImage(pinkyImage, pinkyColumn * Map.CELL, pinkyRow*Map.CELL, PACMAN_SIZE, PACMAN_SIZE, this);
-	            g.drawImage(inkyImage, inkyColumn * Map.CELL, inkyRow*Map.CELL, PACMAN_SIZE, PACMAN_SIZE, this);
-	            g.drawImage(clydeImage, clydeColumn * Map.CELL, clydeRow*Map.CELL, PACMAN_SIZE, PACMAN_SIZE, this);
-	            
+	            g.drawImage(blinkyImage, blinky.getColumn() * Map.CELL, blinky.getRow() *Map.CELL, PACMAN_SIZE, PACMAN_SIZE, this);
+	            g.drawImage(pinkyImage, pinky.getColumn() * Map.CELL, pinky.getRow() *Map.CELL, PACMAN_SIZE, PACMAN_SIZE, this);
+	            g.drawImage(inkyImage, inky.getColumn() * Map.CELL, inky.getRow() *Map.CELL, PACMAN_SIZE, PACMAN_SIZE, this);
+	            g.drawImage(clydeImage, clyde.getColumn() * Map.CELL, clyde.getRow() *Map.CELL, PACMAN_SIZE, PACMAN_SIZE, this);
 	        }
 	        
 	    };
@@ -423,6 +438,23 @@ public class GamePlay extends JPanel{
     public void updateSprites() {
     	
     	updatePacman();
+    	
+    	GrabbingMove blinkyUpdate = new GrabbingMove(blinky);
+    	blinkyUpdate.execute();
+    	GrabbingMove inkyUpdate = new GrabbingMove(inky);
+    	inkyUpdate.execute();
+    	GrabbingMove pinkyUpdate = new GrabbingMove(pinky);
+    	pinkyUpdate.execute();
+    	GrabbingMove clydeUpdate = new GrabbingMove(clyde);
+    	clydeUpdate.execute();
+    	
+    	
+    	/**
+    	updateGhost(blinky);
+    	updateGhost(inky);
+    	updateGhost(pinky);
+    	updateGhost(clyde);
+    	*/
         
         updateMap();
         
@@ -451,6 +483,27 @@ public class GamePlay extends JPanel{
 	    pacMouthOpen = !pacMouthOpen;
 	   
     }
+    
+    /**
+     * Switches the ghost states back and forth between scatter and chase, if not already in frightened mode
+     */
+    public void switchGhostStates() {
+    	if (!pinky.getState().equals(FrightenedState.class)) {
+    		if (pinky.getState().equals(ScatterState.class)) {
+    			blinky.setState(new ChaseState(blinky, map));
+    			pinky.setState(new ChaseState(pinky, map));
+    			inky.setState(new ChaseState(inky, map));
+    			clyde.setState(new ChaseState(clyde, map));
+    		}
+    		else {
+    			blinky.setState(new ScatterState(blinky, map));
+    			pinky.setState(new ScatterState(pinky, map));
+    			inky.setState(new ScatterState(inky, map));
+    			clyde.setState(new ScatterState(clyde, map));
+    		}
+    	}
+    }
+    
     /**
      * Updates pacmans movement and mouth animation
      */
@@ -496,6 +549,44 @@ public class GamePlay extends JPanel{
     }
     
     /**
+     * Updates pacmans movement and mouth animation
+     */
+    public Ghost updateGhost(Ghost ghost)
+    {
+    	int nextMove = ghost.getMove(pacmanColumn, pacmanRow);
+
+    	if (nextMove == UP && !map.isWall(ghost.getColumn(), ghost.getRow() - 1)) ghost.decrementRow();
+        else if (nextMove == DOWN && !map.isWall(ghost.getColumn(), ghost.getRow() + 1)) ghost.incrementRow();
+        else if (nextMove == LEFT && !map.isWall(ghost.getColumn() - 1, ghost.getRow())) ghost.decrementColumn();
+        else if (pacmanDirection == RIGHT && !map.isWall(ghost.getColumn() + 1, ghost.getRow())) ghost.incrementColumn();
+    	
+    	updateGhostImages();
+    	
+    	return ghost;
+    }
+    
+    /**
+     * Updates the images based on the ghost state
+     */
+    public void updateGhostImages() {
+    	pinky.setImage(pinky.getState().getImageName("pinky"));
+    	inky.setImage(inky.getState().getImageName("inky"));
+    	blinky.setImage(blinky.getState().getImageName("blinky"));
+    	clyde.setImage(clyde.getState().getImageName("clyde"));
+    	
+    	
+    	try {
+			pinkyImage = ImageIO.read(new File(pinky.getImage()));
+			inkyImage = ImageIO.read(new File(inky.getImage()));
+			blinkyImage = ImageIO.read(new File(blinky.getImage()));
+			clydeImage = ImageIO.read(new File(clyde.getImage()));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
+    }
+    
+    /**
      * Allows pacman to eat pellets and beat levels
      */
     public void updateMap()
@@ -531,7 +622,8 @@ public class GamePlay extends JPanel{
         
         // 'new' level once all pellets are eaten
         if (allPelletsGone()) {
-            setupLevel();
+        	this.map = new Map();
+        	resetPositions();
             if (volumeOn) {
             	(new CutsceneMusicPlayer()).start();
             }
@@ -710,6 +802,22 @@ public class GamePlay extends JPanel{
         button.setBorderPainted(false); 
         button.setOpaque(false);
         return button;
+    }
+    
+
+    protected class GrabbingMove extends SwingWorker {  
+    	
+    	Ghost ghost;
+    	
+    	protected GrabbingMove(Ghost ghost) {
+    		this.ghost = ghost;
+    	}
+    	
+    	@Override
+    	protected Object doInBackground() throws Exception {
+    		return updateGhost(ghost);
+    	}
+	
     }
 
 }

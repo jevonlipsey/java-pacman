@@ -38,8 +38,8 @@ public class PathFinder {
 	public boolean openCell(Point point) {
         if (point.y < 0 || point.y > map.length - 1) return false;
         if (point.x < 0 || point.x > map[0].length - 1) return false;
-        return map[point.y][point.x].equals('p') || map[point.y][point.x].equals('P') 
-        		|| map[point.y][point.x].equals('o');
+        return map[point.y][point.x].getType() == 'p' || map[point.y][point.x].getType() == 'P'
+        		|| map[point.y][point.x].getType() == 'o' || map[point.y][point.x].getType() == 'g';
     }
 	
 	/**
@@ -49,14 +49,15 @@ public class PathFinder {
 	 */
 	public List<Point> findNeighbors(Point point) {
         List<Point> neighbors = new ArrayList<>();
-        Point up = point.offset(0,  1);
-        Point down = point.offset(0,  -1);
+        Point up = point.offset(0,  -1);
+        Point down = point.offset(0,  1);
         Point left = point.offset(-1, 0);
         Point right = point.offset(1, 0);
         if (openCell(up)) neighbors.add(up);
         if (openCell(down)) neighbors.add(down);
         if (openCell(left)) neighbors.add(left);
         if (openCell(right)) neighbors.add(right);
+        
         return neighbors;
     }
 	
@@ -68,6 +69,7 @@ public class PathFinder {
 	 * @return List of cells
 	 */
 	public List<Point> calculateRoute() {
+		
 	    boolean isComplete = false;
 	    List<Point> visitedPoints = new ArrayList<>();
 	    visitedPoints.add(start);
@@ -98,7 +100,6 @@ public class PathFinder {
 
 	    List<Point> path = backtrackPath(visitedPoints);
 	    move = convertPathToMoves(path);
-	    System.out.println(move);
 	    return path;
 	}
 

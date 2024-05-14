@@ -8,11 +8,11 @@ public class FrightenedState implements GhostState {
 	private int row;
 	private Map map;
 	
-	public FrightenedState(Ghost ghost, int column, int row, Map map) {
+	public FrightenedState(Ghost ghost, Map map) {
 		this.ghost = ghost;
-		this.column = column;
-		this.row = row;
 		this.map = map;
+		column = ghost.getColumn();
+		row = ghost.getRow();
 	}
 	
 	/**
@@ -27,7 +27,7 @@ public class FrightenedState implements GhostState {
 	 * Returns a random move based on available options
 	 */
 	@Override
-	public int getMove() {
+	public int getMove(int pacmanCol, int pacmanRow) {
 		ArrayList<Integer> possibleMoves = new ArrayList<Integer>();
 		
 		if (!map.isWall(column, row - 1)) possibleMoves.add(UP);

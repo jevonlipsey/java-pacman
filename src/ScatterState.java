@@ -30,7 +30,7 @@ public class ScatterState implements GhostState {
 	 * @return the next move
 	 */
 	@Override
-	public int getMove() {
+	public int getMove(int pacmanCol, int pacmanRow) {
 		PathFinder pf = new PathFinder(targetCol, targetRow, column, row, map.getCells());
 		pf.calculateRoute();
 		return pf.getMove();

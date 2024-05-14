@@ -3,10 +3,28 @@
  */
 public class BlinkyStrategy implements GhostStrategy {
 	
+	private Ghost ghost;
+	private int column;
+	private int row;
+	private Map map;
+	
+	public BlinkyStrategy(Ghost ghost, Map map) {
+		this.ghost = ghost;
+		this.map = map;
+		
+	}
+	
+	
+	/**
+	 * gets the next move chasing the pacman's exact location
+	 */
 	@Override
-	public int getMove(GhostState state) {
-		// TODO Auto-generated method stub
-		return 0;
+	public int getMove(int pacmanCol, int pacmanRow) {
+		column = ghost.getColumn();
+		row = ghost.getRow();
+		PathFinder pf = new PathFinder(pacmanCol, pacmanRow, column, row, map.getCells());
+		pf.calculateRoute();
+		return pf.getMove();
 	}
 	
 
