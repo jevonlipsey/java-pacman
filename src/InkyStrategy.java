@@ -27,6 +27,10 @@ public class InkyStrategy implements GhostStrategy {
 	 */
 	@Override
 	public int getMove(int pacmanCol, int pacmanRow) {
+		column = ghost.getColumn();
+		row = ghost.getRow();
+		
+		
 		ArrayList<int[]> possibleTargets = new ArrayList<int[]>();
 		
 		if (!map.isWall(pacmanCol + CHECK_DISTANCE, pacmanRow + CHECK_DISTANCE)) {

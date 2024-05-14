@@ -13,14 +13,16 @@ public class ClydeStrategy implements GhostStrategy {
 	
 	public ClydeStrategy(Ghost ghost, Map map) {
 		this.ghost = ghost;
-		this.column = ghost.getColumn();
-		this.row = ghost.getRow();
 		this.map = map;
 	}
 	
 	
 	@Override
 	public int getMove(int pacmanCol, int pacmanRow) {
+		column = ghost.getColumn();
+		row = ghost.getRow();
+		
+		
 		ArrayList<Integer> possibleMoves = new ArrayList<Integer>();
 		
 		if (!map.isWall(column, row - 1)) possibleMoves.add(UP);
@@ -29,7 +31,7 @@ public class ClydeStrategy implements GhostStrategy {
 		if (!map.isWall(column + 1, row)) possibleMoves.add(RIGHT);
 		
 		Random rand = new Random();
-		int index = rand.nextInt(possibleMoves.size() - 1);
+		int index = rand.nextInt(possibleMoves.size());
 		
 		return possibleMoves.get(index);
 	}

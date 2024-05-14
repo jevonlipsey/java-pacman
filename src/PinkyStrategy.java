@@ -6,7 +6,7 @@ import java.util.Random;
  */
 public class PinkyStrategy implements GhostStrategy {
 
-	private static final int CHECK_DISTANCE = 3;
+	private static final int CHECK_DISTANCE = 1;
 	
 	private Ghost ghost;
 	private int column;
@@ -27,6 +27,9 @@ public class PinkyStrategy implements GhostStrategy {
 	 */
 	@Override
 	public int getMove(int pacmanCol, int pacmanRow) {
+		column = ghost.getColumn();
+		row = ghost.getRow();
+		
 		ArrayList<int[]> possibleTargets = new ArrayList<int[]>();
 		
 		if (!map.isWall(pacmanCol + CHECK_DISTANCE, pacmanRow + CHECK_DISTANCE)) {

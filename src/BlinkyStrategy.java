@@ -10,8 +10,6 @@ public class BlinkyStrategy implements GhostStrategy {
 	
 	public BlinkyStrategy(Ghost ghost, Map map) {
 		this.ghost = ghost;
-		this.column = ghost.getColumn();
-		this.row = ghost.getRow();
 		this.map = map;
 		
 	}
@@ -22,6 +20,8 @@ public class BlinkyStrategy implements GhostStrategy {
 	 */
 	@Override
 	public int getMove(int pacmanCol, int pacmanRow) {
+		column = ghost.getColumn();
+		row = ghost.getRow();
 		PathFinder pf = new PathFinder(pacmanCol, pacmanRow, column, row, map.getCells());
 		pf.calculateRoute();
 		return pf.getMove();

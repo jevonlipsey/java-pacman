@@ -145,10 +145,10 @@ public class GamePlay extends JPanel{
 			pacmanRightImage = ImageIO.read(new File("pacmanRightOpen.png")); 
 			pacmanClosedImage = ImageIO.read(new File("pacmanClosed.png")); 
 			
-			pinkyImage = ImageIO.read(new File("pinky.png")); 
-			clydeImage = ImageIO.read(new File("clyde.png")); 
-			inkyImage = ImageIO.read(new File("inky.png")); 
-			blinkyImage = ImageIO.read(new File("blinky.png")); 
+			pinkyImage = ImageIO.read(new File(pinky.getImage())); 
+			clydeImage = ImageIO.read(new File(clyde.getImage())); 
+			inkyImage = ImageIO.read(new File(inky.getImage())); 
+			blinkyImage = ImageIO.read(new File(blinky.getImage())); 
 			
 			BufferedImage blackImage = ImageIO.read(new File("black.png"));
 			blackImg = new ImageIcon(blackImage.getScaledInstance(50, 800, Image.SCALE_SMOOTH));
@@ -205,6 +205,7 @@ public class GamePlay extends JPanel{
         startTime = System.currentTimeMillis();
         
         resetPositions();
+       
 	}
 	
 	
@@ -333,7 +334,6 @@ public class GamePlay extends JPanel{
 	            g.drawImage(pinkyImage, pinky.getColumn() * Map.CELL, pinky.getRow() *Map.CELL, PACMAN_SIZE, PACMAN_SIZE, this);
 	            g.drawImage(inkyImage, inky.getColumn() * Map.CELL, inky.getRow() *Map.CELL, PACMAN_SIZE, PACMAN_SIZE, this);
 	            g.drawImage(clydeImage, clyde.getColumn() * Map.CELL, clyde.getRow() *Map.CELL, PACMAN_SIZE, PACMAN_SIZE, this);
-	            
 	        }
 	        
 	    };
@@ -439,10 +439,22 @@ public class GamePlay extends JPanel{
     	
     	updatePacman();
     	
+    	GrabbingMove blinkyUpdate = new GrabbingMove(blinky);
+    	blinkyUpdate.execute();
+    	GrabbingMove inkyUpdate = new GrabbingMove(inky);
+    	inkyUpdate.execute();
+    	GrabbingMove pinkyUpdate = new GrabbingMove(pinky);
+    	pinkyUpdate.execute();
+    	GrabbingMove clydeUpdate = new GrabbingMove(clyde);
+    	clydeUpdate.execute();
+    	
+    	
+    	/**
     	updateGhost(blinky);
     	updateGhost(inky);
     	updateGhost(pinky);
     	updateGhost(clyde);
+    	*/
         
         updateMap();
         
@@ -539,7 +551,7 @@ public class GamePlay extends JPanel{
     /**
      * Updates pacmans movement and mouth animation
      */
-    public void updateGhost(Ghost ghost)
+    public Ghost updateGhost(Ghost ghost)
     {
     	int nextMove = ghost.getMove(pacmanColumn, pacmanRow);
 
@@ -549,7 +561,8 @@ public class GamePlay extends JPanel{
         else if (pacmanDirection == RIGHT && !map.isWall(ghost.getColumn() + 1, ghost.getRow())) ghost.incrementColumn();
     	
     	updateGhostImages();
-
+    	
+    	return ghost;
     }
     
     /**
@@ -789,6 +802,22 @@ public class GamePlay extends JPanel{
         button.setBorderPainted(false); 
         button.setOpaque(false);
         return button;
+    }
+    
+
+    protected class GrabbingMove extends SwingWorker {  
+    	
+    	Ghost ghost;
+    	
+    	protected GrabbingMove(Ghost ghost) {
+    		this.ghost = ghost;
+    	}
+    	
+    	@Override
+    	protected Object doInBackground() throws Exception {
+    		return updateGhost(ghost);
+    	}
+	
     }
 
 }
