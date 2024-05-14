@@ -23,6 +23,7 @@ public class Ghost {
 	private int row;
 	
 	private int cornerColumn;
+
 	private int cornerRow;
 	
 	
@@ -64,6 +65,14 @@ public class Ghost {
 	
 	public String getName() {
 		return name;
+	}
+	
+	public void setCornerColumn(int cornerColumn) {
+		this.cornerColumn = cornerColumn;
+	}
+
+	public void setCornerRow(int cornerRow) {
+		this.cornerRow = cornerRow;
 	}
 	
 	public int getCornerColumn() {

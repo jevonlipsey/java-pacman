@@ -38,10 +38,11 @@ public class HomeScreen extends JPanel {
 	 * Adds the background, buttons, and their actionlisteners
 	 * @param parent - JFrame containing the pacman game
 	 */
-	public HomeScreen(JFrame parent) {
+	public HomeScreen(JFrame parent, boolean volumeIsOn) {
 		this.parent = parent;
 		thisJPanel = this;
 		introMusic = new IntroMusicPlayer();
+		volumeOn = volumeIsOn;
 		
 		BackgroundPanel backgroundPanel = new BackgroundPanel();
         

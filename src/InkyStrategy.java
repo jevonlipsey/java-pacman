@@ -6,7 +6,7 @@ import java.util.Random;
  */
 public class InkyStrategy implements GhostStrategy {
 
-	private static final int CHECK_DISTANCE = 5;
+	private static final int CHECK_DISTANCE = 2;
 	
 	private Ghost ghost;
 	private int column;

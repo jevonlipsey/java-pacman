@@ -27,7 +27,7 @@ public class PacMan {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
         //Add the next JPanel
-        SwingUtilities.invokeLater(() -> frame.getContentPane().add(new HomeScreen(frame)));
+        SwingUtilities.invokeLater(() -> frame.getContentPane().add(new HomeScreen(frame, true)));
 
         frame.setSize(600, 800);
         frame.setResizable(false);

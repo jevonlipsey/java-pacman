@@ -78,6 +78,10 @@ public abstract class MusicPlayer extends Thread{
 	public void startAgain() {
 		clip.start();
 	}
+	
+	public Clip getClip() {
+		return clip;
+	}
 
 
 		

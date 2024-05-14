@@ -55,6 +55,7 @@ public class GameOver extends JPanel{
             	}
             	String nameString = name.getText();
             	database.addNewScore(score, nameString);
+            	thisJPanel.remove(backgroundPanel);
                 parent.getContentPane().remove(thisJPanel);
                 SwingUtilities.invokeLater(() -> parent.getContentPane().add(new Leaderboard(parent, volumeOn)));
                 parent.getContentPane().revalidate();
@@ -65,8 +66,9 @@ public class GameOver extends JPanel{
         exitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+            	thisJPanel.remove(backgroundPanel);
                 parent.getContentPane().remove(thisJPanel);
-                SwingUtilities.invokeLater(() -> parent.getContentPane().add(new HomeScreen(parent)));
+                SwingUtilities.invokeLater(() -> parent.getContentPane().add(new HomeScreen(parent, volumeOn)));
                 parent.getContentPane().revalidate();
                 parent.getContentPane().repaint();
             }

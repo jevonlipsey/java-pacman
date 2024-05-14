@@ -58,7 +58,7 @@ public class Leaderboard extends JPanel{
             @Override
             public void actionPerformed(ActionEvent e) {
                 parent.getContentPane().remove(thisJPanel);
-                SwingUtilities.invokeLater(() -> parent.getContentPane().add(new HomeScreen(parent)));
+                SwingUtilities.invokeLater(() -> parent.getContentPane().add(new HomeScreen(parent, volumeOn)));
                 parent.getContentPane().revalidate();
                 parent.getContentPane().repaint();
             }

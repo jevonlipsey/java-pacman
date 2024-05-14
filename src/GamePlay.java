@@ -74,7 +74,7 @@ public class GamePlay extends JPanel{
 	private int pacmanColumn;
 	private int pacmanRow;
 	private boolean pacMouthOpen;
-	private int lives = 3;
+	private int lives = 1;
 	
 	private int blinkyRow;
 	private int blinkyColumn;
@@ -119,23 +119,34 @@ public class GamePlay extends JPanel{
 		
 		this.map = new Map();
 		
-		
+		//instantiate ghosts
 		blinky = new Ghost("blinky");
 		blinky.setStrategy(new BlinkyStrategy(blinky, map));
 		blinky.setColumn(blinkyColumn);
 		blinky.setRow(blinkyRow);
+		blinky.setCornerColumn(1);
+		blinky.setCornerRow(1);
+		
 		pinky = new Ghost("pinky");
 		pinky.setStrategy(new PinkyStrategy(pinky, map));
 		pinky.setColumn(pinkyColumn);
 		pinky.setRow(pinkyRow);
+		pinky.setCornerColumn(19);
+		pinky.setCornerRow(1);
+		
 		inky = new Ghost("inky");
 		inky.setStrategy(new InkyStrategy(inky, map));
 		inky.setColumn(inkyColumn);
 		inky.setRow(inkyRow);
+		inky.setCornerColumn(1);
+		inky.setCornerRow(24);
+		
 		clyde = new Ghost("clyde");
 		clyde.setStrategy(new ClydeStrategy(clyde, map));
 		clyde.setColumn(clydeColumn);
 		clyde.setRow(clydeRow);
+		clyde.setCornerColumn(19);
+		clyde.setCornerRow(24);
 		
 		ImageIcon blackImg = null;
 		
@@ -191,17 +202,17 @@ public class GamePlay extends JPanel{
         setKeyBindings();
 		
         // Create a timer to continuously update the sprites and objects
-        timer = new Timer(120, actionEvent -> updateSprites());
+        timer = new Timer(200, actionEvent -> updateSprites());
         timer.start();
         
         mouthTimer = new Timer(30, actionEvent -> updateMouth());
         mouthTimer.start();
         
-        blinky.setState(new ChaseState(blinky, map));
-		pinky.setState(new ChaseState(pinky, map));
-		inky.setState(new ChaseState(inky, map));
-		clyde.setState(new ChaseState(clyde, map));
-        ghostStateTimer = new Timer(15000, actionEvent -> updateMouth());
+        blinky.setState(new ScatterState(blinky, map));
+		pinky.setState(new ScatterState(pinky, map));
+		inky.setState(new ScatterState(inky, map));
+		clyde.setState(new ScatterState(clyde, map));
+        ghostStateTimer = new Timer(7000, actionEvent -> switchGhostStates());
         ghostStateTimer.start();
                
         startTime = System.currentTimeMillis();
@@ -213,8 +224,8 @@ public class GamePlay extends JPanel{
 	
 	public void resetPositions()
 	{
-		pacmanColumn = 5;
-		pacmanRow = 24;
+		pacmanColumn = 10;
+		pacmanRow = 20;
 		pacMouthOpen = true;
 		pacmanDirection = INVALID;
 		nextDirection = INVALID;
@@ -482,20 +493,22 @@ public class GamePlay extends JPanel{
      * Switches the ghost states back and forth between scatter and chase, if not already in frightened mode
      */
     public void switchGhostStates() {
-    	if (!pinky.getState().equals(FrightenedState.class)) {
-    		if (pinky.getState().equals(ScatterState.class)) {
-    			blinky.setState(new ChaseState(blinky, map));
-    			pinky.setState(new ChaseState(pinky, map));
-    			inky.setState(new ChaseState(inky, map));
-    			clyde.setState(new ChaseState(clyde, map));
-    		}
-    		else {
-    			blinky.setState(new ScatterState(blinky, map));
-    			pinky.setState(new ScatterState(pinky, map));
-    			inky.setState(new ScatterState(inky, map));
-    			clyde.setState(new ScatterState(clyde, map));
-    		}
-    	}
+    	if (pinky.getState().getClass().equals(ScatterState.class)) {
+			blinky.setState(new ChaseState(blinky, map));
+			pinky.setState(new ChaseState(pinky, map));
+			inky.setState(new ChaseState(inky, map));
+			clyde.setState(new ChaseState(clyde, map));
+			ghostStateTimer.setInitialDelay(15000);
+			ghostStateTimer.restart();
+		}
+		else {
+			blinky.setState(new ScatterState(blinky, map));
+			pinky.setState(new ScatterState(pinky, map));
+			inky.setState(new ScatterState(inky, map));
+			clyde.setState(new ScatterState(clyde, map));
+			ghostStateTimer.setInitialDelay(5000);
+			ghostStateTimer.restart();
+		}
     }
     
     /**
@@ -583,7 +596,7 @@ public class GamePlay extends JPanel{
     /**
      * Allows pacman to eat pellets and beat levels
      */
-    public void updateMap()
+    public synchronized void updateMap()
     {
     	// update map food
         if (map.getCells()[pacmanRow][pacmanColumn].getType() == 'p') {
@@ -612,7 +625,16 @@ public class GamePlay extends JPanel{
             if (volumeOn) {
             	(new ExtraMusicPlayer()).start();
             }
+            
+            blinky.setState(new FrightenedState(blinky, map));
+            pinky.setState(new FrightenedState(pinky, map));
+            inky.setState(new FrightenedState(inky, map));
+            clyde.setState(new FrightenedState(clyde, map));
+            ghostStateTimer.setInitialDelay(7000);
+            ghostStateTimer.restart();
+            
         }
+       
         
         // 'new' level once all pellets are eaten
         if (allPelletsGone()) {
@@ -625,32 +647,52 @@ public class GamePlay extends JPanel{
         }
         
         // update pacman lives
-        if ((pacmanColumn == blinky.getColumn() && pacmanRow == blinky.getRow()) ||
-                (pacmanColumn == pinky.getColumn() && pacmanRow == pinky.getRow()) ||
-                (pacmanColumn == inky.getColumn() && pacmanRow == inky.getRow()) ||
-                (pacmanColumn == clyde.getColumn() && pacmanRow == clyde.getRow())) {
-                // Pacman is in the same cell as a ghost, so he loses a life
-                lives--;
-                if (lives <= 0) {
-      
-                	parent.getContentPane().remove(thisJPanel);
-                	SwingUtilities.invokeLater(() -> parent.getContentPane().add(new GameOver(parent, volumeOn, score)));;
-                    parent.getContentPane().revalidate();
-                    parent.getContentPane().repaint();
-                    if (volumeOn) {
-                    	(new DeathMusicPlayer()).start();
-                    }
-                	
-                	
-                } else {
-                	resetPositions();
-                	pacmanDirection = INVALID;
-                	if (volumeOn) {
-                    	(new DeathMusicPlayer()).start();
-                    }
-                }
-            }
+        //Check if pacman is in the same cell as a ghost
+        Ghost hit = checkForGhostHit();
+        
+                
+        //check what state the ghost is in
+        if (hit != null && hit.getState().getClass().equals(FrightenedState.class)) {
+        	hit.setColumn(9);	
+        	hit.setRow(13);
+        	score += 400;
+        }
+
+        else if (hit != null) {
+        	
+        	lives--;
+        		
+	        //Check for death
+	        if (lives <= 0) {	
+	        	parent.getContentPane().remove(thisJPanel);
+	        	SwingUtilities.invokeLater(() -> parent.getContentPane().add(new GameOver(parent, volumeOn, score)));;
+	            parent.getContentPane().revalidate();
+	            parent.getContentPane().repaint();
+	            //dyingSound.stopPlaying();
+	        	
+	        	
+	        } else if(lives > 0){
+	        	resetPositions();
+	        	pacmanDirection = INVALID;
+	        	if (volumeOn) {
+	            	(new DeathMusicPlayer()).start();
+	            }
+	        }
+        }
           
+    }
+    
+    /**
+     * Checks if the ghost is in the same cell as the pacman
+     * @return the ghost being hit, or null if there is no collision
+     */
+    public Ghost checkForGhostHit() {
+    	  if (pacmanColumn == blinky.getColumn() && pacmanRow == blinky.getRow()) return blinky;
+          if (pacmanColumn == pinky.getColumn() && pacmanRow == pinky.getRow()) return pinky;
+          if (pacmanColumn == inky.getColumn() && pacmanRow == inky.getRow()) return inky;
+          if (pacmanColumn == clyde.getColumn() && pacmanRow == clyde.getRow()) return clyde;
+          return null;
+                  
     }
     
     public void updateLivesDisplay() {
@@ -715,7 +757,7 @@ public class GamePlay extends JPanel{
             	  Window parentWindow = SwingUtilities.getWindowAncestor(exitButton);
                   parentWindow.dispose();
                   parent.getContentPane().remove(thisGamePlayPanel);
-                  SwingUtilities.invokeLater(() -> parent.getContentPane().add(new HomeScreen(parent)));
+                  SwingUtilities.invokeLater(() -> parent.getContentPane().add(new HomeScreen(parent, volumeOn)));
                   parent.getContentPane().revalidate();
                   parent.getContentPane().repaint();
             }
