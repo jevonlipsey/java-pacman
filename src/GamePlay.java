@@ -84,6 +84,8 @@ public class GamePlay extends JPanel{
 	private int inkyColumn;
 	private int clydeRow;
 	private int clydeColumn;
+	
+	GrabbingMove blinkyUpdate = new GrabbingMove(blinky);
 
 	private boolean volumeOn;
 	
@@ -447,14 +449,6 @@ public class GamePlay extends JPanel{
     	pinkyUpdate.execute();
     	GrabbingMove clydeUpdate = new GrabbingMove(clyde);
     	clydeUpdate.execute();
-    	
-    	
-    	/**
-    	updateGhost(blinky);
-    	updateGhost(inky);
-    	updateGhost(pinky);
-    	updateGhost(clyde);
-    	*/
         
         updateMap();
         
@@ -631,10 +625,10 @@ public class GamePlay extends JPanel{
         }
         
         // update pacman lives
-        if ((pacmanColumn == blinkyColumn && pacmanRow == blinkyRow) ||
-                (pacmanColumn == pinkyColumn && pacmanRow == pinkyRow) ||
-                (pacmanColumn == inkyColumn && pacmanRow == inkyRow) ||
-                (pacmanColumn == clydeColumn && pacmanRow == clydeRow)) {
+        if ((pacmanColumn == blinky.getColumn() && pacmanRow == blinky.getRow()) ||
+                (pacmanColumn == pinky.getColumn() && pacmanRow == pinky.getRow()) ||
+                (pacmanColumn == inky.getColumn() && pacmanRow == inky.getRow()) ||
+                (pacmanColumn == clyde.getColumn() && pacmanRow == clyde.getRow())) {
                 // Pacman is in the same cell as a ghost, so he loses a life
                 lives--;
                 if (lives <= 0) {
