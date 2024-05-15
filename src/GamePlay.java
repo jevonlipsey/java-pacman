@@ -96,6 +96,8 @@ public class GamePlay extends JPanel{
     
     private long lastEventTime;
     
+    private int speed = 200;
+    
     private Map map;
     
 
@@ -202,7 +204,7 @@ public class GamePlay extends JPanel{
         setKeyBindings();
 		
         // Create a timer to continuously update the sprites and objects
-        timer = new Timer(200, actionEvent -> updateSprites());
+        timer = new Timer(speed, actionEvent -> updateSprites());
         timer.start();
         
         mouthTimer = new Timer(30, actionEvent -> updateMouth());
@@ -685,6 +687,7 @@ public class GamePlay extends JPanel{
         if (allPelletsGone()) {
         	this.map = new Map();
         	resetPositions();
+        	speed -= 20;
             if (volumeOn) {
             	(new CutsceneMusicPlayer()).start();
             }
