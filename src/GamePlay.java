@@ -469,12 +469,7 @@ public class GamePlay extends JPanel{
         		
 	        //Check for death
 	        if (lives <= 0) {	
-	        	parent.getContentPane().remove(thisJPanel);
-	        	SwingUtilities.invokeLater(() -> parent.getContentPane().add(new GameOver(parent, volumeOn, score)));;
-	            parent.getContentPane().revalidate();
-	            parent.getContentPane().repaint();
-	            //dyingSound.stopPlaying();
-	        	
+	        	gameOver();	        	
 	        	
 	        } else if(lives > 0){
 	        	resetPositions();
@@ -508,6 +503,19 @@ public class GamePlay extends JPanel{
         });
         
     }
+    /**
+     * Ends the game
+     */
+    private void gameOver() {
+    	timer.stop(); 
+        mouthTimer.stop(); // top any other relevant timers
+        ghostStateTimer.stop();
+        
+    	parent.getContentPane().remove(thisJPanel);
+    	SwingUtilities.invokeLater(() -> parent.getContentPane().add(new GameOver(parent, volumeOn, score)));;
+        parent.getContentPane().revalidate();
+        parent.getContentPane().repaint();		
+	}
     
     /**
      * Open and closes pacman's mouth
