@@ -23,3 +23,7 @@ If the level is passed, the map will reset, but the score will continue updating
 If Pacman is hit by a ghost, he will lose one of three lives.
 Survive as long as you can to get a highscore!
 
+FUNCTIONALITY ISSUE:
+Currently, exit without save is causing looping/glitching problems. 
+We're unsure of whether or not this is a music threading issue, but
+we believe it has to do with overall optimization as it was previously working.
