@@ -27,44 +27,39 @@ public class PinkyStrategy implements GhostStrategy {
 	 */
 	@Override
 	public int getMove(int pacmanCol, int pacmanRow) {
-		column = ghost.getColumn();
-		row = ghost.getRow();
-		
-		ArrayList<int[]> possibleTargets = new ArrayList<int[]>();
-		
-		if (!map.isWall(pacmanCol + CHECK_DISTANCE, pacmanRow + CHECK_DISTANCE)) {
-			int[] target = {pacmanCol + CHECK_DISTANCE, pacmanRow + CHECK_DISTANCE};
-			possibleTargets.add(target); 
-		}
-		if (!map.isWall(column - CHECK_DISTANCE, row - CHECK_DISTANCE)){
-			int[] target = {pacmanCol - CHECK_DISTANCE, pacmanRow - CHECK_DISTANCE};
-			possibleTargets.add(target); 
-		}
-		if (!map.isWall(column + CHECK_DISTANCE, row - CHECK_DISTANCE)){
-			int[] target = {pacmanCol + CHECK_DISTANCE, pacmanRow - CHECK_DISTANCE};
-			possibleTargets.add(target); 
-		}
-		if (!map.isWall(column - CHECK_DISTANCE, row + CHECK_DISTANCE)){
-			int[] target = {pacmanCol - CHECK_DISTANCE, pacmanRow + CHECK_DISTANCE};
-			possibleTargets.add(target); 
-		}
-		
-		
-		if (possibleTargets.size() != 0) {
-			int targetRow;
-			int targetCol;
-			Random rand = new Random();
-			int index = rand.nextInt(possibleTargets.size() - 1);
-			targetCol = possibleTargets.get(index)[1];
-			targetRow = possibleTargets.get(index)[0];
-			PathFinder pf = new PathFinder(targetCol, targetRow, column, row, map.getCells());
-			pf.calculateRoute();
-			return pf.getMove();
-		}
-	
-		PathFinder pf = new PathFinder(pacmanCol, pacmanRow, column, row, map.getCells());
-		pf.calculateRoute();
-		return pf.getMove();
+	    column = ghost.getColumn();
+	    row = ghost.getRow();
+
+	    ArrayList<int[]> possibleTargets = new ArrayList<int[]>();
+	    int[][] offsets = {{CHECK_DISTANCE, CHECK_DISTANCE}, {-CHECK_DISTANCE, -CHECK_DISTANCE}, {CHECK_DISTANCE, -CHECK_DISTANCE}, {-CHECK_DISTANCE, CHECK_DISTANCE}};
+
+	    for (int[] offset : offsets) {
+	        int targetCol = pacmanCol + offset[0];
+	        int targetRow = pacmanRow + offset[1];
+	        if (!map.isWall(targetCol, targetRow)) {
+	            PathFinder pf = new PathFinder(targetCol, targetRow, column, row, map.getCells());
+	            if (pf.calculateRoute() != null) { // Check if there's a valid path
+	                int[] target = {targetCol, targetRow};
+	                possibleTargets.add(target);
+	            }
+	        }
+	    }
+
+	    if (possibleTargets.size() != 0) {
+	        Random rand = new Random();
+	        int index = rand.nextInt(possibleTargets.size()); 
+	        int targetCol = possibleTargets.get(index)[0];
+	        int targetRow = possibleTargets.get(index)[1];
+	        PathFinder pf = new PathFinder(targetCol, targetRow, column, row, map.getCells());
+	        pf.calculateRoute();
+	        return pf.getMove();
+	    }
+
+	    // Fallback strategy: move in a random direction
+	    int[] directions = {UP, DOWN, LEFT, RIGHT};
+	    Random rand = new Random();
+	    return directions[rand.nextInt(directions.length)];
 	}
+
 
 }

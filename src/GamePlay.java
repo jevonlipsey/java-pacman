@@ -212,7 +212,7 @@ public class GamePlay extends JPanel{
 		pinky.setState(new ScatterState(pinky, map));
 		inky.setState(new ScatterState(inky, map));
 		clyde.setState(new ScatterState(clyde, map));
-        ghostStateTimer = new Timer(7000, actionEvent -> switchGhostStates());
+        ghostStateTimer = new Timer(200, actionEvent -> switchGhostStates());
         ghostStateTimer.start();
                
         startTime = System.currentTimeMillis();
@@ -541,7 +541,7 @@ public class GamePlay extends JPanel{
 			pinky.setState(new ScatterState(pinky, map));
 			inky.setState(new ScatterState(inky, map));
 			clyde.setState(new ScatterState(clyde, map));
-			ghostStateTimer.setInitialDelay(5000);
+			ghostStateTimer.setInitialDelay(100);
 			ghostStateTimer.restart();
 		}
     }
