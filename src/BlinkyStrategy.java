@@ -12,6 +12,9 @@ public class BlinkyStrategy implements GhostStrategy {
 	private int row;
 	private Map map;
 	
+	/*
+	 * Constructor for the class
+	 */
 	public BlinkyStrategy(Ghost ghost, Map map) {
 		this.ghost = ghost;
 		this.map = map;
@@ -20,7 +23,8 @@ public class BlinkyStrategy implements GhostStrategy {
 	
 	
 	/**
-	 * gets the next move chasing the pacman's exact location
+	 * gets the path for the ghost chasing the pacman's exact location
+	 * @return the next valid move in the path
 	 */
 	@Override
 	public int getMove(int pacmanCol, int pacmanRow) {

@@ -23,7 +23,8 @@ public class PinkyStrategy implements GhostStrategy {
 	
 	
 	/**
-	 * gets the next move chasing the pacman's location
+	 * gets the path for chasing a spot 1 away from the pacman's location 
+	 * @return the next move in the path
 	 */
 	@Override
 	public int getMove(int pacmanCol, int pacmanRow) {

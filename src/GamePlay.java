@@ -887,7 +887,9 @@ public class GamePlay extends JPanel{
         return button;
     }
     
-
+    /**
+     * Class used to create objects that will update each ghost's location
+     */
     protected class GrabbingMove extends SwingWorker {  
     	
     	Ghost ghost;
