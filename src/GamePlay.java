@@ -74,7 +74,7 @@ public class GamePlay extends JPanel{
 	private int pacmanColumn;
 	private int pacmanRow;
 	private boolean pacMouthOpen;
-	private int lives = 1;
+	private int lives = 3;
 	
 	private int blinkyRow;
 	private int blinkyColumn;
@@ -449,8 +449,43 @@ public class GamePlay extends JPanel{
      * Updates the movement of the pacman and the ghosts on the screen
      */
     public void updateSprites() {
+        
     	
-    	updatePacman();
+    	 // update pacman lives
+        //Check if pacman is in the same cell as a ghost
+        Ghost hit = checkForGhostHit();
+        
+                
+        //check what state the ghost is in
+        if (hit != null && hit.getState().getClass().equals(FrightenedState.class)) {
+        	hit.setColumn(9);	
+        	hit.setRow(13);
+        	score += 400;
+        }
+
+        else if (hit != null) {
+        	
+        	lives--;
+        		
+	        //Check for death
+	        if (lives <= 0) {	
+	        	parent.getContentPane().remove(thisJPanel);
+	        	SwingUtilities.invokeLater(() -> parent.getContentPane().add(new GameOver(parent, volumeOn, score)));;
+	            parent.getContentPane().revalidate();
+	            parent.getContentPane().repaint();
+	            //dyingSound.stopPlaying();
+	        	
+	        	
+	        } else if(lives > 0){
+	        	resetPositions();
+	        	pacmanDirection = INVALID;
+	        	if (volumeOn) {
+	            	(new DeathMusicPlayer()).start();
+	            }
+	        }
+        }
+        updateMap();
+        updatePacman();
     	
     	GrabbingMove blinkyUpdate = new GrabbingMove(blinky);
     	blinkyUpdate.execute();
@@ -461,7 +496,7 @@ public class GamePlay extends JPanel{
     	GrabbingMove clydeUpdate = new GrabbingMove(clyde);
     	clydeUpdate.execute();
         
-        updateMap();
+
         
         updateLivesDisplay();
 
@@ -552,6 +587,8 @@ public class GamePlay extends JPanel{
         
         
         updateMouth();
+        
+        
 
     }
     
@@ -645,41 +682,7 @@ public class GamePlay extends JPanel{
             }
             
         }
-        
-        // update pacman lives
-        //Check if pacman is in the same cell as a ghost
-        Ghost hit = checkForGhostHit();
-        
-                
-        //check what state the ghost is in
-        if (hit != null && hit.getState().getClass().equals(FrightenedState.class)) {
-        	hit.setColumn(9);	
-        	hit.setRow(13);
-        	score += 400;
-        }
-
-        else if (hit != null) {
-        	
-        	lives--;
-        		
-	        //Check for death
-	        if (lives <= 0) {	
-	        	parent.getContentPane().remove(thisJPanel);
-	        	SwingUtilities.invokeLater(() -> parent.getContentPane().add(new GameOver(parent, volumeOn, score)));;
-	            parent.getContentPane().revalidate();
-	            parent.getContentPane().repaint();
-	            //dyingSound.stopPlaying();
-	        	
-	        	
-	        } else if(lives > 0){
-	        	resetPositions();
-	        	pacmanDirection = INVALID;
-	        	if (volumeOn) {
-	            	(new DeathMusicPlayer()).start();
-	            }
-	        }
-        }
-          
+      
     }
     
     /**
@@ -687,14 +690,58 @@ public class GamePlay extends JPanel{
      * @return the ghost being hit, or null if there is no collision
      */
     public Ghost checkForGhostHit() {
-    	  if (pacmanColumn == blinky.getColumn() && pacmanRow == blinky.getRow()) return blinky;
-          if (pacmanColumn == pinky.getColumn() && pacmanRow == pinky.getRow()) return pinky;
-          if (pacmanColumn == inky.getColumn() && pacmanRow == inky.getRow()) return inky;
-          if (pacmanColumn == clyde.getColumn() && pacmanRow == clyde.getRow()) return clyde;
-          return null;
-                  
+        // Get the next cell in the direction of Pac-Man's movement
+        int nextPacmanColumn = pacmanColumn + getDirectionOffsetX(pacmanDirection);
+        int nextPacmanRow = pacmanRow + getDirectionOffsetY(pacmanDirection);
+
+        // Check for collisions with the current cell and the next cell
+        if (isCollision(pacmanColumn, pacmanRow, blinky) || isCollision(nextPacmanColumn, nextPacmanRow, blinky)) return blinky;
+        if (isCollision(pacmanColumn, pacmanRow, pinky) || isCollision(nextPacmanColumn, nextPacmanRow, pinky)) return pinky;
+        if (isCollision(pacmanColumn, pacmanRow, inky) || isCollision(nextPacmanColumn, nextPacmanRow, inky)) return inky;
+        if (isCollision(pacmanColumn, pacmanRow, clyde) || isCollision(nextPacmanColumn, nextPacmanRow, clyde)) return clyde;
+
+        return null; // No collision
     }
-    
+    /**
+     * Checks if a ghost collides with pacman
+     * @param pacmanColumn
+     * @param pacmanRow
+     * @param ghost
+     * @return
+     */
+    private boolean isCollision(int pacmanColumn, int pacmanRow, Ghost ghost) {
+        return pacmanColumn == ghost.getColumn() && pacmanRow == ghost.getRow();
+    }
+
+    /**
+     * Gets pacman's next column depending on his direction
+     * @param direction
+     * @return next column
+     */
+    private int getDirectionOffsetX(int direction) {
+        switch (direction) {
+            case LEFT: return -1;
+            case RIGHT: return 1;
+            default: return 0;
+        }
+    }
+
+    /**
+     * Gets pacman's next row depending on his direction
+     * @param direction
+     * @return next row
+     */
+    private int getDirectionOffsetY(int direction) {
+        switch (direction) {
+            case UP: return -1;
+            case DOWN: return 1;
+            default: return 0;
+        }
+    }
+
+    /**
+     * updates life counter
+     */
     public void updateLivesDisplay() {
         for (int i = 0; i < livesArray.length; i++) {
             if (i < lives) {
