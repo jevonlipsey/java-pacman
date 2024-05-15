@@ -870,7 +870,7 @@ public class GamePlay extends JPanel{
      * imports a custom arcade-style font 
      * @return the imported font
      */
-    public static Font getArcadeFont() {
+    private static Font getArcadeFont() {
     	// Get custom font
         Font arcadeFont = null;
         try {

@@ -1,8 +1,14 @@
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.FontFormatException;
+import java.awt.GraphicsEnvironment;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
@@ -15,7 +21,7 @@ import javax.swing.SwingUtilities;
  * Creates the JPanel that displays the leaderboard based on the scores saved in the database
  */
 public class Leaderboard extends JPanel{
-	private static final Font font = new Font("Dialog", Font.BOLD, 24);
+	private static final int FONT_SIZE = 30;
 	private final JFrame parent;
 	private JPanel thisJPanel;
 	private JLabel theScores;
@@ -82,19 +88,20 @@ public class Leaderboard extends JPanel{
 	private JLabel leaderboardLabel() {
 		
 		String scoreString = "<html>";
-		theScores = new JLabel(scoreString, SwingConstants.CENTER);
 		ArrayList<String> scores = database.getTopNScores(10);
 		for(int i = 0; i < scores.size(); i++) {
 			scoreString += scores.get(i) + "<br/>";
 		}
 		scoreString += "<html>";
-		theScores.setText(scoreString);
+		theScores = new JLabel(scoreString.toUpperCase());
+		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+		ge.registerFont(getArcadeFont());
+		theScores.setFont(getArcadeFont());
 		theScores.setForeground(Color.YELLOW);
-		theScores.setFont(new Font("Serif", Font.BOLD, 24));
 		theScores.setHorizontalAlignment(SwingConstants.CENTER);
 		theScores.setVerticalAlignment(SwingConstants.NORTH);
 		
-		theScores.setOpaque(false);
+		//theScores.setOpaque(false);
 		return theScores;
 	}
 	
@@ -110,7 +117,22 @@ public class Leaderboard extends JPanel{
         return button;
     }
 	
-	
+    /**
+     * imports a custom arcade-style font 
+     * @return the imported font
+     */
+    private static Font getArcadeFont() {
+    	// Get custom font
+        Font arcadeFont = null;
+        try {
+            InputStream is = new FileInputStream(new File("ARCADECLASSIC.TTF"));
+            arcadeFont = Font.createFont(Font.TRUETYPE_FONT, is).deriveFont(Font.PLAIN, FONT_SIZE);
+        } catch (IOException | FontFormatException e) {
+            e.printStackTrace();
+        }
+        assert arcadeFont != null;
+        return arcadeFont;
+    }
 	
     
 	
