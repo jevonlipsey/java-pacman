@@ -1,4 +1,6 @@
-
+/**
+ * The class for the ghost's scatter state, when they each start to head toward their individual assigned corners
+ */
 public class ScatterState implements GhostState {
 
 	private Ghost ghost;

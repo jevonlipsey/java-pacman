@@ -1,6 +1,10 @@
 import java.util.ArrayList;
 import java.util.Random;
-
+/**
+ * This class holds the methods for the ghosts' frightened state, where they turn blue and start to move in random directions.
+ * this state occurs when the pacman eats a large pellet, and the ghosts are now able to be eaten by pacman.
+ * 
+ */
 public class FrightenedState implements GhostState {
 
 	private Ghost ghost;
@@ -8,6 +12,11 @@ public class FrightenedState implements GhostState {
 	private int row;
 	private Map map;
 	
+	/**
+	 * Constructor for the class
+	 * @param ghost
+	 * @param map
+	 */
 	public FrightenedState(Ghost ghost, Map map) {
 		this.ghost = ghost;
 		this.map = map;
@@ -16,7 +25,7 @@ public class FrightenedState implements GhostState {
 	}
 	
 	/**
-	 * returns the image path name for the frightened ghost
+	 * returns the image path name for the frightened blue ghost
 	 */
 	@Override
 	public String getImageName(String ghostName) {

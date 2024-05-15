@@ -8,7 +8,16 @@ public interface GhostState {
 	public static final int RIGHT = 4;
 	public static final int INVALID = -1;
 	
+	/**
+	 * @param ghostName
+	 * @return the image pathname for the ghost
+	 */
 	public String getImageName(String ghostName);
 	
+	/**
+	 * @param pacmanCol
+	 * @param pacmanRow
+	 * @return the next move for the ghost
+	 */
 	public int getMove(int pacmanCol, int pacmanRow);
 }

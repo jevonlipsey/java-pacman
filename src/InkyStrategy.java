@@ -13,6 +13,11 @@ public class InkyStrategy implements GhostStrategy {
 	private int row;
 	private Map map;
 	
+	/**
+	 * Constructor for the class
+	 * @param ghost
+	 * @param map
+	 */
 	public InkyStrategy(Ghost ghost, Map map) {
 		this.ghost = ghost;
 		this.column = ghost.getColumn();
@@ -23,7 +28,8 @@ public class InkyStrategy implements GhostStrategy {
 	
 	
 	/**
-	 * gets the next move chasing the pacman's location
+	 * gets the path for chasing a spot 2 away from the pacman's location 
+	 * @return the next move in the path
 	 */
 	@Override
 	public int getMove(int pacmanCol, int pacmanRow) {

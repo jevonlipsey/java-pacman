@@ -2,7 +2,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 /**
- * Strategy class for Clyde, the orange ghost. Determines which direction the ghost will move in
+ * Strategy class for Clyde, the orange ghost (random moves). Determines which direction the ghost will move in
  */
 public class ClydeStrategy implements GhostStrategy {
 
@@ -12,6 +12,11 @@ public class ClydeStrategy implements GhostStrategy {
 	private int lastMove = 0;
 	private Map map;
 	
+	/**
+	 * Constructor for the class
+	 * @param ghost
+	 * @param map
+	 */
 	public ClydeStrategy(Ghost ghost, Map map) {
 		this.ghost = ghost;
 		this.map = map;
@@ -19,7 +24,9 @@ public class ClydeStrategy implements GhostStrategy {
 	
 	
 	
-
+	/**
+	 * @return a random valid move
+	 */
 	@Override
 	public int getMove(int pacmanCol, int pacmanRow) {
 	    column = ghost.getColumn();

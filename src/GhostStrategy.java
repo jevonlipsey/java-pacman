@@ -9,7 +9,6 @@ public interface GhostStrategy {
 	public static final int RIGHT = 4;
 	public static final int INVALID = -1;
 	
-	
 	public static enum Mode {CHASE, SCATTER, FRIGHTENED};
 	
 	/**
